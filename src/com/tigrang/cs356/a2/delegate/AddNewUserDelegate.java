@@ -4,14 +4,14 @@ import com.tigrang.cs356.a2.model.DataSource;
 import com.tigrang.cs356.a2.model.User;
 import com.tigrang.cs356.a2.mvc.R;
 import com.tigrang.cs356.a2.view.AdminControlPanelView;
+import com.tigrang.mvc.delegate.ActionDelegate;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class AddNewUserDelegate implements ActionListener {
+public class AddNewUserDelegate extends ActionDelegate {
 
 	private AdminControlPanelView view;
 	private DefaultTreeModel model;
@@ -31,14 +31,13 @@ public class AddNewUserDelegate implements ActionListener {
 			return;
 		}
 
-		DefaultMutableTreeNode node = view.getActiveGroupNode();
+		DefaultMutableTreeNode node = DataSource.get().getActiveGroupNode();
 		if (node == null) {
 			return;
 		}
 
 		User user = User.newUser(username);
-		System.out.println(user.getId());
-		user.setGroup(view.getActiveGroup());
+		user.setGroup(DataSource.get().getActiveGroup());
 
 		DataSource.get().getUsers().put(user.getId(), user);
 		model.insertNodeInto(new DefaultMutableTreeNode(user, false), node, node.getChildCount());

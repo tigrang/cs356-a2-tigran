@@ -1,11 +1,11 @@
 package com.tigrang.cs356.a2.view;
 
-import com.tigrang.cs356.a2.model.Group;
 import com.tigrang.mvc.view.ViewElement;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreeSelectionModel;
 
 public class AdminControlPanelView extends com.tigrang.mvc.view.View {
 
@@ -34,30 +34,28 @@ public class AdminControlPanelView extends com.tigrang.mvc.view.View {
 	@ViewElement(id = "tree")
 	private JTree treeUsers;
 
-	public AdminControlPanelView() {
-		super();
+	private TreeModel model;
 
+	public AdminControlPanelView(DefaultTreeModel model) {
+		this.model = model;
+
+		createFrame();
+		parseViewElements();
+		setupUI();
+	}
+
+	@Override
+	public void setupUI() {
+		treeUsers.setModel(model);
+		treeUsers.setSelectionRow(0);
+		treeUsers.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+	}
+
+	private void createFrame() {
 		frame = new JFrame("Mini Twitter: Admin Control Panel");
 		frame.setContentPane(container);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
-
-		parseViewElements();
-	}
-
-	public DefaultMutableTreeNode getActiveGroupNode() {
-		TreePath path = treeUsers.getSelectionPath();
-
-		if (path == null) {
-			JOptionPane.showMessageDialog(null, "Select a node first.");
-			return null;
-		}
-
-		DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-		return (node.isRoot() || node.getAllowsChildren()) ? node : (DefaultMutableTreeNode) node.getParent();
-	}
-
-	public Group getActiveGroup() {
-		return (Group) getActiveGroupNode().getUserObject();
+		setRoot(frame);
 	}
 }

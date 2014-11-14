@@ -1,16 +1,17 @@
 package com.tigrang.cs356.a2.delegate;
 
+import com.tigrang.cs356.a2.controller.UserOverviewController;
 import com.tigrang.cs356.a2.model.User;
 import com.tigrang.cs356.a2.mvc.R;
+import com.tigrang.mvc.delegate.ActionDelegate;
 import com.tigrang.mvc.view.View;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class OpenUserDialogDelegate implements ActionListener {
+public class OpenUserDialogDelegate extends ActionDelegate {
 
 	private View view;
 
@@ -34,10 +35,7 @@ public class OpenUserDialogDelegate implements ActionListener {
 		}
 
 		User user = (User) node.getUserObject();
-		JOptionPane.showMessageDialog(null, user);
-
-//		UserDialogController controller = new UserDialogController();
-//		controller.setUser(user);
-//		controller.run();
+		UserOverviewController controller = new UserOverviewController(user);
+		controller.showView(true);
 	}
 }

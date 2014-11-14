@@ -1,5 +1,6 @@
 package com.tigrang.cs356.a2.model;
 
+import javax.swing.tree.DefaultMutableTreeNode;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,6 +13,8 @@ public class DataSource {
 	private Map<Integer, Group> groups;
 
 	private Group root;
+
+	private DefaultMutableTreeNode activeGroupNode;
 
 	private DataSource() {
 		users = new HashMap<>();
@@ -37,5 +40,17 @@ public class DataSource {
 
 	public Map<Integer, Group> getGroups() {
 		return groups;
+	}
+
+	public DefaultMutableTreeNode getActiveGroupNode() {
+		return activeGroupNode;
+	}
+
+	public void setActiveGroupNode(DefaultMutableTreeNode node) {
+		this.activeGroupNode = node;
+	}
+
+	public Group getActiveGroup() {
+		return (activeGroupNode == null) ? null : (Group) activeGroupNode.getUserObject();
 	}
 }
