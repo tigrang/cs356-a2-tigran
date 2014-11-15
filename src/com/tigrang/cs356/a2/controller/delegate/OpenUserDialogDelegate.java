@@ -1,4 +1,4 @@
-package com.tigrang.cs356.a2.delegate;
+package com.tigrang.cs356.a2.controller.delegate;
 
 import com.tigrang.cs356.a2.controller.UserOverviewController;
 import com.tigrang.cs356.a2.model.User;

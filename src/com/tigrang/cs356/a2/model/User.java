@@ -1,25 +1,42 @@
 package com.tigrang.cs356.a2.model;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class User {
+public class User extends Observable {
 
 	private static AtomicInteger atomicInteger = new AtomicInteger();
 	private int id;
 	private String username;
 	private Group group;
+	private List<Tweet> tweets;
 	private Set<Integer> following;
 
 	protected User(int id, String username) {
 		this.id = id;
 		this.username = username;
+		this.tweets = new ArrayList<>();
 		this.following = new LinkedHashSet<>();
 	}
 
 	public static User newUser(String username) {
 		return new User(atomicInteger.incrementAndGet(), username);
+	}
+
+	public void addTweet(Tweet tweet) {
+		tweets.add(tweet);
+		setChanged();
+		notifyObservers();
+
+		for (int id : following) {
+			User user = DataSource.get().getUsers().get(id);
+			user.setChanged();
+			user.notifyObservers();
+		}
+	}
+
+	public List<Tweet> getTweets() {
+		return tweets;
 	}
 
 	public Group getGroup() {
@@ -33,6 +50,7 @@ public class User {
 
 		this.group = group;
 		group.addUser(this);
+		notifyObservers();
 	}
 
 	public Set<Integer> getFollowingIds() {
@@ -45,6 +63,8 @@ public class User {
 
 	public void follow(int id) {
 		following.add(id);
+		setChanged();
+		notifyObservers();
 	}
 
 	public String getUsername() {
@@ -56,6 +76,6 @@ public class User {
 	}
 
 	public String toString() {
-		return username;
+		return String.format("(%d) %s", id, username);
 	}
 }

@@ -1,6 +1,6 @@
 package com.tigrang.cs356.a2.controller;
 
-import com.tigrang.cs356.a2.delegate.*;
+import com.tigrang.cs356.a2.controller.delegate.*;
 import com.tigrang.cs356.a2.model.DataSource;
 import com.tigrang.cs356.a2.mvc.R;
 import com.tigrang.cs356.a2.view.AdminControlPanelView;
