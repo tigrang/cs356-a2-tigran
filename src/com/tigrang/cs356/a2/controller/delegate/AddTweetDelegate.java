@@ -1,6 +1,6 @@
 package com.tigrang.cs356.a2.controller.delegate;
 
-import com.tigrang.cs356.a2.model.Tweet;
+import com.tigrang.cs356.a2.model.TextTweet;
 import com.tigrang.cs356.a2.model.User;
 import com.tigrang.cs356.a2.mvc.R;
 import com.tigrang.cs356.a2.view.UserOverviewView;
@@ -29,7 +29,7 @@ public class AddTweetDelegate extends ActionDelegate {
 			return;
 		}
 
-		user.addTweet(new Tweet(message));
+		user.addTweet(new TextTweet(message));
 		textField.setText("");
 	}
 }

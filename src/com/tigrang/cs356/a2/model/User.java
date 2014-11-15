@@ -1,9 +1,12 @@
 package com.tigrang.cs356.a2.model;
 
+import com.tigrang.cs356.a2.controller.visitor.TweetAcceptor;
+import com.tigrang.cs356.a2.controller.visitor.TweetVisitor;
+
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class User extends Observable {
+public class User extends Observable implements TweetAcceptor {
 
 	private static AtomicInteger atomicInteger = new AtomicInteger();
 	private int id;
@@ -77,5 +80,10 @@ public class User extends Observable {
 
 	public String toString() {
 		return String.format("(%d) %s", id, username);
+	}
+
+	@Override
+	public void accept(TweetVisitor visitor) {
+		tweets.forEach((tweet) -> tweet.accept(visitor));
 	}
 }

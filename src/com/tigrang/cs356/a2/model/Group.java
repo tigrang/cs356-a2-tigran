@@ -1,10 +1,13 @@
 package com.tigrang.cs356.a2.model;
 
+import com.tigrang.cs356.a2.controller.visitor.TweetAcceptor;
+import com.tigrang.cs356.a2.controller.visitor.TweetVisitor;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Group {
+public class Group implements TweetAcceptor {
 
 	private static AtomicInteger atomicInteger = new AtomicInteger();
 	private int id;
@@ -72,9 +75,18 @@ public class Group {
 
 	public void setParent(Group group) {
 		this.parent = group;
+		if (!group.getGroups().containsKey(getId())) {
+			group.addGroup(this);
+		}
 	}
 
 	public String toString() {
 		return name;
+	}
+
+	@Override
+	public void accept(TweetVisitor visitor) {
+		groups.forEach((id, group) -> group.accept(visitor));
+		users.forEach((id, user) -> user.accept(visitor));
 	}
 }

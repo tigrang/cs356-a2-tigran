@@ -1,8 +1,11 @@
 package com.tigrang.cs356.a2.model;
 
+import com.tigrang.cs356.a2.controller.visitor.TweetAcceptor;
+import com.tigrang.cs356.a2.controller.visitor.TweetVisitor;
+
 import java.time.Instant;
 
-public class Tweet implements Comparable<Tweet> {
+public abstract class Tweet implements TweetAcceptor, Comparable<Tweet> {
 
 	private long created;
 	private String message;
@@ -23,6 +26,11 @@ public class Tweet implements Comparable<Tweet> {
 	@Override
 	public int compareTo(Tweet o) {
 		return Long.compare(o.created, created);
+	}
+
+	@Override
+	public void accept(TweetVisitor tweetVisitor) {
+		tweetVisitor.atTweet(this);
 	}
 
 	public String toString() {

@@ -1,6 +1,8 @@
 package com.tigrang.cs356.a2.controller;
 
 import com.tigrang.cs356.a2.controller.delegate.*;
+import com.tigrang.cs356.a2.controller.visitor.PositiveTweetCountVisitor;
+import com.tigrang.cs356.a2.controller.visitor.TweetCountVisitor;
 import com.tigrang.cs356.a2.model.DataSource;
 import com.tigrang.cs356.a2.mvc.R;
 import com.tigrang.cs356.a2.view.AdminControlPanelView;
@@ -54,8 +56,16 @@ public class AdminControlPanelController extends Controller {
 		view.addDelegate(R.id.show_group_total_btn,
 				new ShowTotalDialogDelegate("groups", () -> DataSource.get().getGroups().size()));
 		view.addDelegate(R.id.show_messages_total_btn,
-				new ShowTotalDialogDelegate("messages", () -> 0));
+				new ShowTotalDialogDelegate("messages", () -> {
+					TweetCountVisitor tweetCountVisitor = new TweetCountVisitor();
+					DataSource.get().getRoot().accept(tweetCountVisitor);
+					return tweetCountVisitor.getCount();
+				}));
 		view.addDelegate(R.id.show_pos_percentage_btn,
-				new ShowTotalDialogDelegate("positive messages", () -> 0));
+				new ShowTotalDialogDelegate("positive messages", () -> {
+					PositiveTweetCountVisitor positiveMessageVisitor = new PositiveTweetCountVisitor();
+					DataSource.get().getRoot().accept(positiveMessageVisitor);
+					return positiveMessageVisitor.getCount();
+				}));
 	}
 }
