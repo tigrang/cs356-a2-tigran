@@ -9,12 +9,12 @@ import com.tigrang.mvc.delegate.ActionDelegate;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
-public class AddTweetDelegate extends ActionDelegate {
+public class AddTextTweetDelegate extends ActionDelegate {
 
 	private UserOverviewView view;
 	private User user;
 
-	public AddTweetDelegate(UserOverviewView view, User user) {
+	public AddTextTweetDelegate(UserOverviewView view, User user) {
 		this.view = view;
 		this.user = user;
 	}
