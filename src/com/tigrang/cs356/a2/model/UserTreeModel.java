@@ -27,8 +27,6 @@ public class UserTreeModel extends AbstractTreeModel<Group> implements Group.Gro
 		int[] newIndexes = new int[1];
 		newIndexes[0] = getIndexOfChild(parent, child);
 		nodesWereInserted(parent, newIndexes);
-
-		System.out.println("Group was added");
 	}
 
 	@Override
@@ -41,8 +39,6 @@ public class UserTreeModel extends AbstractTreeModel<Group> implements Group.Gro
 		childIndex[0] = getIndexOfChild(parent, child);
 		removedArray[0] = child;
 		nodesWereRemoved(parent, childIndex, removedArray);
-
-		System.out.println("Group was removed");
 	}
 
 	@Override
@@ -50,8 +46,6 @@ public class UserTreeModel extends AbstractTreeModel<Group> implements Group.Gro
 		int[] newIndexes = new int[1];
 		newIndexes[0] = getIndexOfChild(group, user);
 		nodesWereInserted(group, newIndexes);
-
-		System.out.println("User was added");
 	}
 
 	@Override
@@ -62,8 +56,6 @@ public class UserTreeModel extends AbstractTreeModel<Group> implements Group.Gro
 		childIndex[0] = getIndexOfChild(group, user);
 		removedArray[0] = user;
 		nodesWereRemoved(group, childIndex, removedArray);
-
-		System.out.println("User was removed");
 	}
 
 	@Override
