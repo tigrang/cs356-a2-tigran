@@ -22,7 +22,7 @@ public class AddTextTweetDelegate extends ActionDelegate {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JTextField textField = view.findComponentByIdAs(R.id.txt_tweet, JTextField.class);
-		String message =textField.getText();
+		String message = textField.getText();
 
 		if (message.isEmpty()) {
 			JOptionPane.showMessageDialog(view.getRoot(), "Enter a message first.");

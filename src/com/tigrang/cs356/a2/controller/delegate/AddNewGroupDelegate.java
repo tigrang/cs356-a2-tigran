@@ -7,18 +7,14 @@ import com.tigrang.cs356.a2.view.AdminControlPanelView;
 import com.tigrang.mvc.delegate.ActionDelegate;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 import java.awt.event.ActionEvent;
 
 public class AddNewGroupDelegate extends ActionDelegate {
 
 	private AdminControlPanelView view;
-	private DefaultTreeModel model;
 
-	public AddNewGroupDelegate(AdminControlPanelView view, DefaultTreeModel model) {
+	public AddNewGroupDelegate(AdminControlPanelView view) {
 		this.view = view;
-		this.model = model;
 	}
 
 	@Override
@@ -31,16 +27,15 @@ public class AddNewGroupDelegate extends ActionDelegate {
 			return;
 		}
 
-		DefaultMutableTreeNode node = DataSource.get().getActiveGroupNode();
-		if (node == null) {
+		Group activeGroup = DataSource.get().getActiveGroup();
+		if (activeGroup == null) {
 			return;
 		}
 
 		Group group = Group.newGroup(groupName);
-		group.setParent(DataSource.get().getActiveGroup());
+		group.setParent(activeGroup);
 
 		DataSource.get().getGroups().put(group.getId(), group);
-		model.insertNodeInto(new DefaultMutableTreeNode(group), node, node.getChildCount());
 
 		textField.setText("");
 	}

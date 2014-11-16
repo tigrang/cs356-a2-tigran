@@ -7,7 +7,6 @@ import com.tigrang.mvc.delegate.ActionDelegate;
 import com.tigrang.mvc.view.View;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.event.ActionEvent;
 
@@ -28,14 +27,13 @@ public class OpenUserDialogDelegate extends ActionDelegate {
 			return;
 		}
 
-		DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-		if (node.isRoot() || node.getAllowsChildren()) {
+		Object node = path.getLastPathComponent();
+		if (!(node instanceof User)) {
 			JOptionPane.showMessageDialog(null, "Select a valid user.");
 			return;
 		}
 
-		User user = (User) node.getUserObject();
-		UserOverviewController controller = new UserOverviewController(user);
+		UserOverviewController controller = new UserOverviewController((User) node);
 		controller.showView(true);
 	}
 }

@@ -1,6 +1,8 @@
 package com.tigrang.cs356.a2.controller.delegate;
 
 import com.tigrang.cs356.a2.model.DataSource;
+import com.tigrang.cs356.a2.model.Group;
+import com.tigrang.cs356.a2.model.User;
 import com.tigrang.mvc.delegate.TreeSelectionDelegate;
 
 import javax.swing.event.TreeSelectionEvent;
@@ -13,14 +15,14 @@ public class UpdateActiveGroupNodeDelegate extends TreeSelectionDelegate {
 	public void valueChanged(TreeSelectionEvent e) {
 		TreePath path = e.getNewLeadSelectionPath();
 		if (path == null) {
-			DataSource.get().setActiveGroupNode(null);
+			DataSource.get().setActiveGroup(null);
 			return;
 		}
 
-		DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-		if (!node.isRoot() && !node.getAllowsChildren()) {
-			node = (DefaultMutableTreeNode) node.getParent();
+		Object node = path.getLastPathComponent();
+		if (node instanceof User) {
+			node = ((User) node).getGroup();
 		}
-		DataSource.get().setActiveGroupNode(node);
+		DataSource.get().setActiveGroup((Group) node);
 	}
 }

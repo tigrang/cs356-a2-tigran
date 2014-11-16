@@ -3,13 +3,13 @@ package com.tigrang.cs356.a2.model;
 import com.tigrang.cs356.a2.controller.visitor.TweetAcceptor;
 import com.tigrang.cs356.a2.controller.visitor.TweetVisitor;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Group implements TweetAcceptor {
+public class Group extends Observable implements TweetAcceptor {
 
 	private static AtomicInteger atomicInteger = new AtomicInteger();
+	private List<GroupChangeListener> groupChangeListenerList;
 	private int id;
 	private String name;
 	private Map<Integer, User> users;
@@ -21,10 +21,43 @@ public class Group implements TweetAcceptor {
 		this.name = name;
 		this.users = new HashMap<>();
 		this.groups = new HashMap<>();
+		groupChangeListenerList = new ArrayList<>();
 	}
 
 	public static Group newGroup(String name) {
 		return new Group(atomicInteger.incrementAndGet(), name);
+	}
+
+	public void addGroupChangeListener(GroupChangeListener listener) {
+		groupChangeListenerList.add(listener);
+	}
+
+	public void removeGroupChangeListener(GroupChangeListener listener) {
+		groupChangeListenerList.remove(listener);
+	}
+
+	protected void notifyGroupAdded(Group group) {
+		for (GroupChangeListener listener : groupChangeListenerList) {
+			listener.onGroupAdded(this, group);
+		}
+	}
+
+	protected void notifyGroupRemoved(Group group) {
+		for (GroupChangeListener listener : groupChangeListenerList) {
+			listener.onGroupRemoved(this, group);
+		}
+	}
+
+	protected void notifyUserAdded(User user) {
+		for (GroupChangeListener listener : groupChangeListenerList) {
+			listener.onUserAdded(this, user);
+		}
+	}
+
+	protected void notifyUserRemoved(User user) {
+		for (GroupChangeListener listener : groupChangeListenerList) {
+			listener.onUserRemoved(this, user);
+		}
 	}
 
 	public Map<Integer, User> getUsers() {
@@ -53,20 +86,32 @@ public class Group implements TweetAcceptor {
 		}
 		users.put(user.getId(), user);
 		user.setGroup(this);
+		setChanged();
+		notifyObservers();
+		notifyUserAdded(user);
 	}
 
 	public void removeUser(User user) {
 		users.remove(user.getId());
 		user.setGroup(null);
+		setChanged();
+		notifyObservers();
+		notifyUserRemoved(user);
 	}
 
 	public void addGroup(Group group) {
 		groups.put(group.getId(), group);
 		group.setParent(this);
+		setChanged();
+		notifyObservers();
+		notifyGroupAdded(group);
 	}
 
 	public void removeGroup(Group group) {
 		groups.remove(group.getId());
+		setChanged();
+		notifyObservers();
+		notifyGroupRemoved(group);
 	}
 
 	public Group getParent() {
@@ -78,6 +123,8 @@ public class Group implements TweetAcceptor {
 		if (!group.getGroups().containsKey(getId())) {
 			group.addGroup(this);
 		}
+		setChanged();
+		notifyObservers();
 	}
 
 	public String toString() {
@@ -88,5 +135,16 @@ public class Group implements TweetAcceptor {
 	public void accept(TweetVisitor visitor) {
 		groups.forEach((id, group) -> group.accept(visitor));
 		users.forEach((id, user) -> user.accept(visitor));
+	}
+
+	public interface GroupChangeListener {
+
+		public void onGroupAdded(Group parent, Group child);
+
+		public void onGroupRemoved(Group parent, Group child);
+
+		public void onUserAdded(Group group, User user);
+
+		public void onUserRemoved(Group group, User user);
 	}
 }

@@ -1,5 +1,8 @@
 package com.tigrang.cs356.a2.view;
 
+import com.tigrang.cs356.a2.model.DataSource;
+import com.tigrang.cs356.a2.model.UserTreeModel;
+import com.tigrang.cs356.a2.model.UserTreeModelOld;
 import com.tigrang.mvc.view.ViewElement;
 
 import javax.swing.*;
@@ -46,7 +49,7 @@ public class AdminControlPanelView extends com.tigrang.mvc.view.View {
 
 	@Override
 	public void setupUI() {
-		treeUsers.setModel(model);
+		treeUsers.setModel(new UserTreeModel(DataSource.get().getRoot()));
 		treeUsers.setSelectionRow(0);
 		treeUsers.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 	}

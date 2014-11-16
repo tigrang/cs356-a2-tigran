@@ -8,7 +8,6 @@ import com.tigrang.cs356.a2.mvc.R;
 import com.tigrang.cs356.a2.view.AdminControlPanelView;
 import com.tigrang.mvc.controller.Controller;
 
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 public class AdminControlPanelController extends Controller {
@@ -18,7 +17,6 @@ public class AdminControlPanelController extends Controller {
 	private DefaultTreeModel model;
 
 	private AdminControlPanelController() {
-		setupModel();
 		setView(new AdminControlPanelView(model));
 		addDelegates();
 		showView(true);
@@ -31,18 +29,12 @@ public class AdminControlPanelController extends Controller {
 		return instance;
 	}
 
-	private void setupModel() {
-		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(DataSource.get().getRoot());
-		model = new DefaultTreeModel(rootNode, true);
-		DataSource.get().setActiveGroupNode(rootNode);
-	}
-
 	private void addDelegates() {
 		AdminControlPanelView view = (AdminControlPanelView) getView();
 
 		// Connect add new user/group buttons
-		view.addDelegate(R.id.add_user_btn, new AddNewUserDelegate(view, model));
-		view.addDelegate(R.id.add_group_btn, new AddNewGroupDelegate(view, model));
+		view.addDelegate(R.id.add_user_btn, new AddNewUserDelegate(view));
+		view.addDelegate(R.id.add_group_btn, new AddNewGroupDelegate(view));
 
 		// Connect group select change
 		view.addDelegate(R.id.tree, new UpdateActiveGroupNodeDelegate());
