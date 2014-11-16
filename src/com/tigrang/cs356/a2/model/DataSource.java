@@ -1,23 +1,22 @@
 package com.tigrang.cs356.a2.model;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.tigrang.cs356.a2.util.IndexedHashMap;
 
 public class DataSource {
 
 	private static DataSource instance;
 
-	private Map<Integer, User> users;
+	private IndexedHashMap<Integer, User> users;
 
-	private Map<Integer, Group> groups;
+	private IndexedHashMap<Integer, Group> groups;
 
 	private Group root;
 
 	private Group activeGroup;
 
 	private DataSource() {
-		users = new HashMap<>();
-		groups = new HashMap<>();
+		users = new IndexedHashMap<>();
+		groups = new IndexedHashMap<>();
 		activeGroup = root = Group.newGroup("Root");
 		groups.put(root.getId(), root);
 	}
@@ -33,11 +32,11 @@ public class DataSource {
 		return root;
 	}
 
-	public Map<Integer, User> getUsers() {
+	public IndexedHashMap<Integer, User> getUsers() {
 		return users;
 	}
 
-	public Map<Integer, Group> getGroups() {
+	public IndexedHashMap<Integer, Group> getGroups() {
 		return groups;
 	}
 

@@ -70,7 +70,7 @@ public abstract class AbstractTreeModel<T> implements TreeModel {
 		}
 	}
 
-	public abstract Object[] getPathToRoot(T node);
+	public abstract Object[] getPathToRoot(Object node);
 
 	public void addTreeModelListener(TreeModelListener l) {
 		listenerList.add(TreeModelListener.class, l);

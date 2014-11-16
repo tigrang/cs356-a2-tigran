@@ -2,8 +2,11 @@ package com.tigrang.cs356.a2.model;
 
 import com.tigrang.cs356.a2.model.visitor.TweetAcceptor;
 import com.tigrang.cs356.a2.model.visitor.TweetVisitor;
+import com.tigrang.cs356.a2.util.IndexedHashMap;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Group extends Observable implements TweetAcceptor {
@@ -12,15 +15,15 @@ public class Group extends Observable implements TweetAcceptor {
 	private List<GroupChangeListener> groupChangeListenerList;
 	private int id;
 	private String name;
-	private Map<Integer, User> users;
-	private Map<Integer, Group> groups;
+	private IndexedHashMap<Integer, User> users;
+	private IndexedHashMap<Integer, Group> groups;
 	private Group parent;
 
 	protected Group(int id, String name) {
 		this.id = id;
 		this.name = name;
-		this.users = new HashMap<>();
-		this.groups = new HashMap<>();
+		this.users = new IndexedHashMap<>();
+		this.groups = new IndexedHashMap<>();
 		groupChangeListenerList = new ArrayList<>();
 	}
 
@@ -60,11 +63,11 @@ public class Group extends Observable implements TweetAcceptor {
 		}
 	}
 
-	public Map<Integer, User> getUsers() {
+	public IndexedHashMap<Integer, User> getUsers() {
 		return users;
 	}
 
-	public Map<Integer, Group> getGroups() {
+	public IndexedHashMap<Integer, Group> getGroups() {
 		return groups;
 	}
 

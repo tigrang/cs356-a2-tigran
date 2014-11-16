@@ -5,7 +5,7 @@ import com.tigrang.cs356.a2.model.UserTreeModel;
 import com.tigrang.mvc.view.ViewElement;
 
 import javax.swing.*;
-import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 public class AdminControlPanelView extends com.tigrang.mvc.view.View {
@@ -35,7 +35,7 @@ public class AdminControlPanelView extends com.tigrang.mvc.view.View {
 	@ViewElement(id = "tree")
 	private JTree treeUsers;
 
-	private TreeModel model;
+	private UserTreeModel model;
 
 	public AdminControlPanelView() {
 		createFrame();
@@ -45,7 +45,8 @@ public class AdminControlPanelView extends com.tigrang.mvc.view.View {
 
 	@Override
 	public void setupUI() {
-		treeUsers.setModel(new UserTreeModel(DataSource.get().getRoot()));
+		model = new UserTreeModel(DataSource.get().getRoot());
+		treeUsers.setModel(model);
 		treeUsers.setSelectionRow(0);
 		treeUsers.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 	}
@@ -72,6 +73,12 @@ public class AdminControlPanelView extends com.tigrang.mvc.view.View {
 
 	public void clearGroupName() {
 		txtGroupName.setText("");
+	}
+
+	public void selectAndScrollTo(Object object) {
+		TreePath path = new TreePath(model.getPathToRoot(object));
+		treeUsers.setSelectionPath(path);
+		treeUsers.scrollPathToVisible(path);
 	}
 
 	public void showMessage(String message) {

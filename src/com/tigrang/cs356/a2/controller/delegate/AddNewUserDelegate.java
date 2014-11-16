@@ -7,7 +7,6 @@ import com.tigrang.cs356.a2.mvc.R;
 import com.tigrang.cs356.a2.view.AdminControlPanelView;
 import com.tigrang.mvc.delegate.ActionDelegate;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 public class AddNewUserDelegate extends ActionDelegate {
@@ -37,5 +36,6 @@ public class AddNewUserDelegate extends ActionDelegate {
 
 		DataSource.get().getUsers().put(user.getId(), user);
 		view.clearUsername();
+		view.selectAndScrollTo(user);
 	}
 }

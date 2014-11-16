@@ -3,7 +3,6 @@ package com.tigrang.cs356.a2.model;
 import javax.swing.tree.TreePath;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class UserTreeModel extends AbstractTreeModel<Group> implements Group.GroupChangeListener {
 
@@ -61,27 +60,14 @@ public class UserTreeModel extends AbstractTreeModel<Group> implements Group.Gro
 	@Override
 	public int getIndexOfChild(Object parent, Object child) {
 		Group group = (Group) parent;
-		int index = -1;
-
-		if (group.getGroups().containsValue(child)) {
-			for (Map.Entry<Integer, Group> entry : group.getGroups().entrySet()) {
-				index++;
-				if (entry.getValue().equals(child)) {
-					return index;
-				}
+		int index = group.getGroups().indexOf(child);
+		if (index == -1) {
+			index = group.getUsers().indexOf(child);
+			if (index != -1) {
+				index += group.getGroups().size();
 			}
 		}
-
-		if (group.getUsers().containsValue(child)) {
-			for (Map.Entry<Integer, User> entry : group.getUsers().entrySet()) {
-				index++;
-				if (entry.getValue().equals(child)) {
-					return index;
-				}
-			}
-		}
-
-		return -1;
+		return index;
 	}
 
 	@Override
@@ -90,10 +76,10 @@ public class UserTreeModel extends AbstractTreeModel<Group> implements Group.Gro
 		int groupCount = group.getGroups().size();
 
 		if (index < groupCount) {
-			return new ArrayList<>(group.getGroups().values()).get(index);
+			return group.getGroups().at(index);
 		}
 
-		return new ArrayList<>(group.getUsers().values()).get(index - groupCount);
+		return group.getUsers().at(index - groupCount);
 	}
 
 	@Override
@@ -113,9 +99,18 @@ public class UserTreeModel extends AbstractTreeModel<Group> implements Group.Gro
 	}
 
 	@Override
-	public Object[] getPathToRoot(Group group) {
+	public Object[] getPathToRoot(Object node) {
 		List<Object> path = new ArrayList<>();
-		path.add(group);
+		path.add(node);
+
+		Group group;
+		if (node instanceof User) {
+			group = ((User) node).getGroup();
+			path.add(0, group);
+		} else {
+			group = (Group) node;
+		}
+
 		while (group.getParent() != null) {
 			path.add(0, group.getParent());
 			group = group.getParent();

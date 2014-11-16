@@ -6,7 +6,6 @@ import com.tigrang.cs356.a2.mvc.R;
 import com.tigrang.cs356.a2.view.AdminControlPanelView;
 import com.tigrang.mvc.delegate.ActionDelegate;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 public class AddNewGroupDelegate extends ActionDelegate {
@@ -36,5 +35,6 @@ public class AddNewGroupDelegate extends ActionDelegate {
 
 		DataSource.get().getGroups().put(group.getId(), group);
 		view.clearGroupName();
+		view.selectAndScrollTo(group);
 	}
 }
