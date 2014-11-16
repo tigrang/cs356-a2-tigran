@@ -1,4 +1,4 @@
-package com.tigrang.cs356.a2.controller.visitor;
+package com.tigrang.cs356.a2.model.visitor;
 
 public interface TweetAcceptor {
 

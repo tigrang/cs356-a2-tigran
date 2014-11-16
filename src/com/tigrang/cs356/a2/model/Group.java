@@ -1,7 +1,7 @@
 package com.tigrang.cs356.a2.model;
 
-import com.tigrang.cs356.a2.controller.visitor.TweetAcceptor;
-import com.tigrang.cs356.a2.controller.visitor.TweetVisitor;
+import com.tigrang.cs356.a2.model.visitor.TweetAcceptor;
+import com.tigrang.cs356.a2.model.visitor.TweetVisitor;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;

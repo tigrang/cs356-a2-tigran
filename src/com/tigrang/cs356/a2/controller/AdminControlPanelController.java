@@ -1,8 +1,8 @@
 package com.tigrang.cs356.a2.controller;
 
 import com.tigrang.cs356.a2.controller.delegate.*;
-import com.tigrang.cs356.a2.controller.visitor.PositiveTweetCountVisitor;
-import com.tigrang.cs356.a2.controller.visitor.TweetCountVisitor;
+import com.tigrang.cs356.a2.model.visitor.PositiveTweetCountVisitor;
+import com.tigrang.cs356.a2.model.visitor.TweetCountVisitor;
 import com.tigrang.cs356.a2.model.DataSource;
 import com.tigrang.cs356.a2.mvc.R;
 import com.tigrang.cs356.a2.view.AdminControlPanelView;
