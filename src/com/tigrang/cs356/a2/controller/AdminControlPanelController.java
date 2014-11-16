@@ -8,16 +8,14 @@ import com.tigrang.cs356.a2.mvc.R;
 import com.tigrang.cs356.a2.view.AdminControlPanelView;
 import com.tigrang.mvc.controller.Controller;
 
-import javax.swing.tree.DefaultTreeModel;
-
 public class AdminControlPanelController extends Controller {
 
 	private static AdminControlPanelController instance;
 
-	private DefaultTreeModel model;
+	private AdminControlPanelView view;
 
 	private AdminControlPanelController() {
-		setView(new AdminControlPanelView(model));
+		setupView();
 		addDelegates();
 		showView(true);
 	}
@@ -29,9 +27,12 @@ public class AdminControlPanelController extends Controller {
 		return instance;
 	}
 
-	private void addDelegates() {
-		AdminControlPanelView view = (AdminControlPanelView) getView();
+	private void setupView() {
+		view = new AdminControlPanelView();
+		setView(view);
+	}
 
+	private void addDelegates() {
 		// Connect add new user/group buttons
 		view.addDelegate(R.id.add_user_btn, new AddNewUserDelegate(view));
 		view.addDelegate(R.id.add_group_btn, new AddNewGroupDelegate(view));
@@ -44,17 +45,17 @@ public class AdminControlPanelController extends Controller {
 
 		// Connect the show total dialog buttons
 		view.addDelegate(R.id.show_user_total_btn,
-				new ShowTotalDialogDelegate("users", () -> DataSource.get().getUsers().size()));
+				new ShowTotalDialogDelegate(view, "users", () -> DataSource.get().getUsers().size()));
 		view.addDelegate(R.id.show_group_total_btn,
-				new ShowTotalDialogDelegate("groups", () -> DataSource.get().getGroups().size()));
+				new ShowTotalDialogDelegate(view, "groups", () -> DataSource.get().getGroups().size()));
 		view.addDelegate(R.id.show_messages_total_btn,
-				new ShowTotalDialogDelegate("messages", () -> {
+				new ShowTotalDialogDelegate(view, "messages", () -> {
 					TweetCountVisitor tweetCountVisitor = new TweetCountVisitor();
 					DataSource.get().getRoot().accept(tweetCountVisitor);
 					return tweetCountVisitor.getCount();
 				}));
 		view.addDelegate(R.id.show_pos_percentage_btn,
-				new ShowTotalDialogDelegate("positive messages", () -> {
+				new ShowTotalDialogDelegate(view, "positive messages", () -> {
 					PositiveTweetCountVisitor positiveMessageVisitor = new PositiveTweetCountVisitor();
 					DataSource.get().getRoot().accept(positiveMessageVisitor);
 					return positiveMessageVisitor.getCount();

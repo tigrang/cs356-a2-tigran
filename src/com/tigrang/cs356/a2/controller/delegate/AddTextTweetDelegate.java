@@ -6,7 +6,6 @@ import com.tigrang.cs356.a2.mvc.R;
 import com.tigrang.cs356.a2.view.UserOverviewView;
 import com.tigrang.mvc.delegate.ActionDelegate;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 public class AddTextTweetDelegate extends ActionDelegate {
@@ -21,15 +20,14 @@ public class AddTextTweetDelegate extends ActionDelegate {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		JTextField textField = view.findComponentByIdAs(R.id.txt_tweet, JTextField.class);
-		String message = textField.getText();
+		String message = view.getTextTweetMessage();
 
 		if (message.isEmpty()) {
-			JOptionPane.showMessageDialog(view.getRoot(), "Enter a message first.");
+			view.showError("Enter a message first.", R.id.txt_tweet);
 			return;
 		}
 
 		user.addTweet(new TextTweet(message));
-		textField.setText("");
+		view.clearTextTweetMessage();
 	}
 }

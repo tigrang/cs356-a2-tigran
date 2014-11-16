@@ -3,6 +3,7 @@ package com.tigrang.cs356.a2.controller.delegate;
 import com.tigrang.cs356.a2.controller.UserOverviewController;
 import com.tigrang.cs356.a2.model.User;
 import com.tigrang.cs356.a2.mvc.R;
+import com.tigrang.cs356.a2.view.AdminControlPanelView;
 import com.tigrang.mvc.delegate.ActionDelegate;
 import com.tigrang.mvc.view.View;
 
@@ -12,9 +13,9 @@ import java.awt.event.ActionEvent;
 
 public class OpenUserDialogDelegate extends ActionDelegate {
 
-	private View view;
+	private AdminControlPanelView view;
 
-	public OpenUserDialogDelegate(View view) {
+	public OpenUserDialogDelegate(AdminControlPanelView view) {
 		this.view = view;
 	}
 
@@ -23,13 +24,13 @@ public class OpenUserDialogDelegate extends ActionDelegate {
 		TreePath path = view.findComponentByIdAs(R.id.tree, JTree.class).getSelectionPath();
 
 		if (path == null) {
-			JOptionPane.showMessageDialog(null, "Select a node first.");
+			view.showError("Select a valid user", R.id.tree);
 			return;
 		}
 
 		Object node = path.getLastPathComponent();
 		if (!(node instanceof User)) {
-			JOptionPane.showMessageDialog(null, "Select a valid user.");
+			view.showError("Select a valid user", R.id.tree);
 			return;
 		}
 

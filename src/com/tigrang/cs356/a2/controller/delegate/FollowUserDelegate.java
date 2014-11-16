@@ -5,7 +5,6 @@ import com.tigrang.cs356.a2.mvc.R;
 import com.tigrang.cs356.a2.view.UserOverviewView;
 import com.tigrang.mvc.delegate.ActionDelegate;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 public class FollowUserDelegate extends ActionDelegate {
@@ -19,14 +18,13 @@ public class FollowUserDelegate extends ActionDelegate {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		JTextField textField = view.findComponentByIdAs(R.id.txt_user_id, JTextField.class);
-
-		if (textField.getText().isEmpty()) {
-			JOptionPane.showMessageDialog(view.getRoot(), "Enter an id first.");
+	public void actionPerformed(ActionEvent actionEvent) {
+		try {
+			int id = view.getFollowerId();
+			user.follow(id);
+			view.clearFollowerId();
+		} catch (NumberFormatException e) {
+			view.showError("Enter a valid id.", R.id.txt_user_id);
 		}
-		int id = Integer.parseInt(textField.getText());
-		user.follow(id);
-		textField.setText("");
 	}
 }

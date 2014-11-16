@@ -58,4 +58,25 @@ public class UserOverviewView extends View {
 	public void setTitle() {
 		frame.setTitle("User Overview: " + user);
 	}
+
+	public int getFollowerId() {
+		return Integer.parseInt(txtUserId.getText());
+	}
+
+	public void clearFollowerId() {
+		txtUserId.setText("");
+	}
+
+	public String getTextTweetMessage() {
+		return txtTweet.getText();
+	}
+
+	public void clearTextTweetMessage() {
+		txtTweet.setText("");
+	}
+
+	public void showError(String message, String id) {
+		JOptionPane.showMessageDialog(getRoot(), message, "Error", JOptionPane.ERROR_MESSAGE);
+		findComponentById(id).requestFocus();
+	}
 }

@@ -2,11 +2,9 @@ package com.tigrang.cs356.a2.view;
 
 import com.tigrang.cs356.a2.model.DataSource;
 import com.tigrang.cs356.a2.model.UserTreeModel;
-import com.tigrang.cs356.a2.model.UserTreeModelOld;
 import com.tigrang.mvc.view.ViewElement;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
@@ -39,9 +37,7 @@ public class AdminControlPanelView extends com.tigrang.mvc.view.View {
 
 	private TreeModel model;
 
-	public AdminControlPanelView(DefaultTreeModel model) {
-		this.model = model;
-
+	public AdminControlPanelView() {
 		createFrame();
 		parseViewElements();
 		setupUI();
@@ -60,5 +56,30 @@ public class AdminControlPanelView extends com.tigrang.mvc.view.View {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		setRoot(frame);
+	}
+
+	public String getUsername() {
+		return txtUsername.getText();
+	}
+
+	public void clearUsername() {
+		txtUsername.setText("");
+	}
+
+	public String getGroupName() {
+		return txtGroupName.getText();
+	}
+
+	public void clearGroupName() {
+		txtGroupName.setText("");
+	}
+
+	public void showMessage(String message) {
+		JOptionPane.showMessageDialog(getRoot(), message);
+	}
+
+	public void showError(String message, String id) {
+		JOptionPane.showMessageDialog(getRoot(), message, "Error", JOptionPane.ERROR_MESSAGE);
+		findComponentById(id).requestFocus();
 	}
 }

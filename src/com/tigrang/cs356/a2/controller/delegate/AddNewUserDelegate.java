@@ -20,16 +20,15 @@ public class AddNewUserDelegate extends ActionDelegate {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		JTextField textField = ((JTextField) view.findComponentById(R.id.username));
-		String username = textField.getText();
+		String username = view.getUsername();
 		if (username.isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Enter a username.");
-			textField.requestFocusInWindow();
+			view.showError("Enter a username.", R.id.username);
 			return;
 		}
 
 		Group group = DataSource.get().getActiveGroup();
 		if (group == null) {
+			view.showError("Select a group first.", R.id.tree);
 			return;
 		}
 
@@ -37,7 +36,6 @@ public class AddNewUserDelegate extends ActionDelegate {
 		user.setGroup(group);
 
 		DataSource.get().getUsers().put(user.getId(), user);
-
-		textField.setText("");
+		view.clearUsername();
 	}
 }

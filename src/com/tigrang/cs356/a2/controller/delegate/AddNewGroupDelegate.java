@@ -19,16 +19,15 @@ public class AddNewGroupDelegate extends ActionDelegate {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		JTextField textField = (JTextField) view.findComponentById(R.id.group_name);
-		String groupName = textField.getText();
+		String groupName = view.getGroupName();
 		if (groupName.isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Enter a group name.");
-			textField.requestFocusInWindow();
+			view.showError("Enter a group name.", R.id.group_name);
 			return;
 		}
 
 		Group activeGroup = DataSource.get().getActiveGroup();
 		if (activeGroup == null) {
+			view.showError("Select a group first.", R.id.tree);
 			return;
 		}
 
@@ -36,7 +35,6 @@ public class AddNewGroupDelegate extends ActionDelegate {
 		group.setParent(activeGroup);
 
 		DataSource.get().getGroups().put(group.getId(), group);
-
-		textField.setText("");
+		view.clearGroupName();
 	}
 }
