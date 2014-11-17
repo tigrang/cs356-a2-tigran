@@ -1,15 +1,11 @@
 package com.tigrang.cs356.a2.controller;
 
 import com.tigrang.cs356.a2.controller.delegate.*;
-import com.tigrang.cs356.a2.model.visitor.PositiveTweetCountVisitor;
-import com.tigrang.cs356.a2.model.visitor.TweetCountVisitor;
 import com.tigrang.cs356.a2.model.DataSource;
+import com.tigrang.cs356.a2.model.visitor.TweetCountVisitor;
 import com.tigrang.cs356.a2.mvc.R;
 import com.tigrang.cs356.a2.view.AdminControlPanelView;
 import com.tigrang.mvc.controller.Controller;
-import com.tigrang.mvc.delegate.ActionDelegate;
-
-import java.awt.event.ActionEvent;
 
 public class AdminControlPanelController extends Controller {
 
@@ -57,14 +53,6 @@ public class AdminControlPanelController extends Controller {
 					DataSource.get().getRoot().accept(tweetCountVisitor);
 					return tweetCountVisitor.getCount();
 				}));
-		view.addDelegate(R.id.show_pos_percentage, new ActionDelegate() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				PositiveTweetCountVisitor positiveMessageVisitor = new PositiveTweetCountVisitor();
-				DataSource.get().getRoot().accept(positiveMessageVisitor);
-				double percentage = positiveMessageVisitor.getPositivePercentage();
-				view.showMessage(String.format("There are %.1f%% positive messages.", percentage));
-			}
-		});
+		view.addDelegate(R.id.show_pos_percentage, new ShowPositivePercentageDialogDelegate(view));
 	}
 }

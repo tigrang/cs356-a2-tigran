@@ -20,44 +20,6 @@ public class UserTreeModel extends AbstractTreeModel<Group> implements Group.Gro
 	}
 
 	@Override
-	public void onGroupAdded(Group parent, Group child) {
-		child.addGroupChangeListener(this);
-
-		int[] newIndexes = new int[1];
-		newIndexes[0] = getIndexOfChild(parent, child);
-		nodesWereInserted(parent, newIndexes);
-	}
-
-	@Override
-	public void onGroupRemoved(Group parent, Group child) {
-		child.removeGroupChangeListener(this);
-
-		int[] childIndex = new int[1];
-		Object[] removedArray = new Object[1];
-
-		childIndex[0] = getIndexOfChild(parent, child);
-		removedArray[0] = child;
-		nodesWereRemoved(parent, childIndex, removedArray);
-	}
-
-	@Override
-	public void onUserAdded(Group group, User user) {
-		int[] newIndexes = new int[1];
-		newIndexes[0] = getIndexOfChild(group, user);
-		nodesWereInserted(group, newIndexes);
-	}
-
-	@Override
-	public void onUserRemoved(Group group, User user) {
-		int[] childIndex = new int[1];
-		Object[] removedArray = new Object[1];
-
-		childIndex[0] = getIndexOfChild(group, user);
-		removedArray[0] = user;
-		nodesWereRemoved(group, childIndex, removedArray);
-	}
-
-	@Override
 	public int getIndexOfChild(Object parent, Object child) {
 		Group group = (Group) parent;
 		int index = group.getGroups().indexOf(child);
@@ -117,5 +79,43 @@ public class UserTreeModel extends AbstractTreeModel<Group> implements Group.Gro
 		}
 
 		return path.toArray();
+	}
+
+	@Override
+	public void onGroupAdded(Group parent, Group child) {
+		child.addGroupChangeListener(this);
+
+		int[] newIndexes = new int[1];
+		newIndexes[0] = getIndexOfChild(parent, child);
+		nodesWereInserted(parent, newIndexes);
+	}
+
+	@Override
+	public void onGroupRemoved(Group parent, Group child) {
+		child.removeGroupChangeListener(this);
+
+		int[] childIndex = new int[1];
+		Object[] removedArray = new Object[1];
+
+		childIndex[0] = getIndexOfChild(parent, child);
+		removedArray[0] = child;
+		nodesWereRemoved(parent, childIndex, removedArray);
+	}
+
+	@Override
+	public void onUserAdded(Group group, User user) {
+		int[] newIndexes = new int[1];
+		newIndexes[0] = getIndexOfChild(group, user);
+		nodesWereInserted(group, newIndexes);
+	}
+
+	@Override
+	public void onUserRemoved(Group group, User user) {
+		int[] childIndex = new int[1];
+		Object[] removedArray = new Object[1];
+
+		childIndex[0] = getIndexOfChild(group, user);
+		removedArray[0] = user;
+		nodesWereRemoved(group, childIndex, removedArray);
 	}
 }
