@@ -1,6 +1,6 @@
 package com.tigrang.cs356.a2;
 
-import com.tigrang.cs356.a2.controller.AdminControlPanelController;
+import com.tigrang.cs356.a2.view.AdminControlPanelView;
 
 import javax.swing.*;
 
@@ -9,7 +9,7 @@ public class Driver {
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(() -> {
 			setLAF();
-			AdminControlPanelController.getInstance();
+			AdminControlPanelView.getInstance().show(true);
 		});
 	}
 

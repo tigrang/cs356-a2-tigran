@@ -9,7 +9,7 @@ public class UserFollowingListModel extends AbstractListModel<User> {
 
 	public UserFollowingListModel(User user) {
 		this.user = user;
-		user.addObserver((o, a) -> fireContentsChanged(o, 0, getSize() - 1));
+		user.addObserver((obj, arg) -> fireContentsChanged(obj, 0, getSize() - 1));
 	}
 
 	@Override

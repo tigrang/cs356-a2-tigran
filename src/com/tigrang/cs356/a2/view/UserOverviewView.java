@@ -1,41 +1,75 @@
 package com.tigrang.cs356.a2.view;
 
+import com.tigrang.cs356.a2.controller.TweetsController;
+import com.tigrang.cs356.a2.controller.UsersController;
 import com.tigrang.cs356.a2.model.NewsFeedListModel;
 import com.tigrang.cs356.a2.model.User;
 import com.tigrang.cs356.a2.model.UserFollowingListModel;
 import com.tigrang.mvc.view.View;
-import com.tigrang.mvc.view.ViewElement;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class UserOverviewView extends View {
 
-	private JFrame frame;
-	@ViewElement(id = "user_overview_container")
-	private JPanel container;
-	@ViewElement(id = "txt_user_id")
-	private JTextField txtUserId;
-	@ViewElement(id = "btn_follow_user")
-	private JButton followUserButton;
-	@ViewElement(id = "list_following")
-	private JList listFollowing;
-	@ViewElement(id = "txt_tweet")
-	private JTextField txtTweet;
-	@ViewElement(id = "btn_post_tweet")
-	private JButton postTweetButton;
-	@ViewElement(id = "list_news_feed")
-	private JList listNewsFeed;
+	private TweetsController tweetsController;
+
+	private UsersController usersController;
 
 	private User user;
+
 	private UserFollowingListModel followingListModel;
+
 	private NewsFeedListModel newsFeedListModel;
+
+	private JFrame frame;
+
+	private JPanel container;
+
+	private JTextField txtUserId;
+
+	private JButton followUserButton;
+
+	private JList listFollowing;
+
+	private JTextField txtTweet;
+
+	private JButton postTweetButton;
+
+	private JList listNewsFeed;
 
 	public UserOverviewView(User user) {
 		this.user = user;
+		this.tweetsController = new TweetsController();
+		this.usersController = new UsersController();
 
 		setupUI();
 		setupModel();
-		parseViewElements();
+		setupActions();
+	}
+
+	public void show(boolean visible) {
+		getRoot().setVisible(visible);
+	}
+
+	private void setupActions() {
+		followUserButton.addActionListener((ae) -> {
+			try {
+				usersController.follow(user, getFollowerId());
+				clearFollowerId();
+			} catch (NumberFormatException e) {
+				showError("Enter a valid user id", txtUserId);
+			}
+		});
+
+		postTweetButton.addActionListener((ae) -> {
+			try {
+				tweetsController.add(user, getTextTweetMessage());
+				clearTextTweetMessage();
+			} catch (Exception e) {
+				showError(e.getMessage(), txtTweet);
+			}
+		});
 	}
 
 	@Override
@@ -75,8 +109,8 @@ public class UserOverviewView extends View {
 		txtTweet.setText("");
 	}
 
-	public void showError(String message, String id) {
+	public void showError(String message, Component component) {
 		JOptionPane.showMessageDialog(getRoot(), message, "Error", JOptionPane.ERROR_MESSAGE);
-		findComponentById(id).requestFocus();
+		component.requestFocus();
 	}
 }
