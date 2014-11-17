@@ -3,19 +3,18 @@ package com.tigrang.cs356.a2.view;
 import com.tigrang.cs356.a2.controller.GroupsController;
 import com.tigrang.cs356.a2.controller.TweetsController;
 import com.tigrang.cs356.a2.controller.UsersController;
-import com.tigrang.cs356.a2.model.DataSource;
-import com.tigrang.cs356.a2.model.Group;
-import com.tigrang.cs356.a2.model.User;
 import com.tigrang.cs356.a2.model.UserTreeModel;
+import com.tigrang.cs356.a2.model.entity.Group;
+import com.tigrang.cs356.a2.model.entity.User;
 
 import javax.swing.*;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 
-public class AdminControlPanelView extends com.tigrang.mvc.view.View {
+public class AdminControlPanel extends com.tigrang.mvc.view.View {
 
-	private static final AdminControlPanelView INSTANCE = new AdminControlPanelView();
+	private static final AdminControlPanel INSTANCE = new AdminControlPanel();
 
 	private UserTreeModel model;
 
@@ -49,18 +48,22 @@ public class AdminControlPanelView extends com.tigrang.mvc.view.View {
 
 	private JTree treeUsers;
 
-	private AdminControlPanelView() {
-		usersController = new UsersController();
-		groupsController = new GroupsController();
-		tweetsController = new TweetsController();
+	private AdminControlPanel() {
+
+	}
+
+	public static AdminControlPanel getInstance() {
+		return INSTANCE;
+	}
+
+	public void init(UsersController usersController, GroupsController groupsController, TweetsController tweetsController) {
+		this.usersController = usersController;
+		this.groupsController = groupsController;
+		this.tweetsController = tweetsController;
 
 		createFrame();
 		setupUI();
 		setupActions();
-	}
-
-	public static AdminControlPanelView getInstance() {
-		return INSTANCE;
 	}
 
 	public void show(boolean visible) {
@@ -69,7 +72,7 @@ public class AdminControlPanelView extends com.tigrang.mvc.view.View {
 
 	@Override
 	public void setupUI() {
-		model = new UserTreeModel(DataSource.get().getRoot());
+		model = new UserTreeModel(groupsController.view(Group.ROOT_ID));
 		treeUsers.setModel(model);
 		treeUsers.setSelectionRow(0);
 		treeUsers.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -86,7 +89,7 @@ public class AdminControlPanelView extends com.tigrang.mvc.view.View {
 	private void setupActions() {
 		btnAddUser.addActionListener((ae) -> {
 			try {
-				User user = usersController.add(getUsername());
+				User user = usersController.add(getSelectedGroup(), getUsername());
 				selectAndScrollTo(user);
 				clearUsername();
 			} catch (Exception e) {
@@ -96,26 +99,12 @@ public class AdminControlPanelView extends com.tigrang.mvc.view.View {
 
 		btnAddGroup.addActionListener((ae) -> {
 			try {
-				Group group = groupsController.add(getGroupName());
+				Group group = groupsController.add(model.getRoot(), getGroupName());
 				selectAndScrollTo(group);
 				clearGroupName();
 			} catch (Exception e) {
 				showError(e.getMessage(), txtUsername);
 			}
-		});
-
-		treeUsers.addTreeSelectionListener((e) -> {
-			TreePath path = e.getNewLeadSelectionPath();
-			if (path == null) {
-				groupsController.setActive(null);
-				return;
-			}
-
-			Object node = path.getLastPathComponent();
-			if (node instanceof User) {
-				node = ((User) node).getGroup();
-			}
-			groupsController.setActive((Group) node);
 		});
 
 		btnOpenUserView.addActionListener((e) -> {
@@ -131,8 +120,9 @@ public class AdminControlPanelView extends com.tigrang.mvc.view.View {
 				return;
 			}
 
-			UserOverviewView overviewView = new UserOverviewView(((User) node));
-			overviewView.show(true);
+			UserOverviewDialog userOverviewDialog = new UserOverviewDialog((User) node);
+			userOverviewDialog.init(usersController, tweetsController);
+			userOverviewDialog.show(true);
 		});
 
 		btnShowUserTotal.addActionListener((ae) -> showMessage(String.format("There are %d users.",
@@ -142,10 +132,11 @@ public class AdminControlPanelView extends com.tigrang.mvc.view.View {
 				groupsController.getTotal())));
 
 		btnShowMessagesTotal.addActionListener((ae) -> showMessage(String.format("There are %d messages.",
-				tweetsController.getTotal())));
+				tweetsController.getTotal(model.getRoot()))));
 
 		btnShowPositivePercentage.addActionListener((ae) -> showMessage(
-				String.format("There are %.1f%% positive messages.", tweetsController.getPositivePercentage())));
+				String.format("There are %.1f%% positive messages.",
+						tweetsController.getPositivePercentage(model.getRoot()))));
 	}
 
 	public String getUsername() {
@@ -162,6 +153,19 @@ public class AdminControlPanelView extends com.tigrang.mvc.view.View {
 
 	public void clearGroupName() {
 		txtGroupName.setText("");
+	}
+
+	public Group getSelectedGroup() {
+		TreePath path = treeUsers.getSelectionPath();
+		if (path == null) {
+			return null;
+		}
+
+		Object node = path.getLastPathComponent();
+		if (node instanceof User) {
+			return ((User) node).getGroup();
+		}
+		return (Group) node;
 	}
 
 	public void selectAndScrollTo(Object object) {

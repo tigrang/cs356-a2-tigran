@@ -1,5 +1,8 @@
 package com.tigrang.cs356.a2.model;
 
+import com.tigrang.cs356.a2.model.entity.Group;
+import com.tigrang.cs356.a2.model.entity.User;
+
 import javax.swing.tree.TreePath;
 import java.util.ArrayList;
 import java.util.List;

@@ -3,14 +3,14 @@ package com.tigrang.cs356.a2.view;
 import com.tigrang.cs356.a2.controller.TweetsController;
 import com.tigrang.cs356.a2.controller.UsersController;
 import com.tigrang.cs356.a2.model.NewsFeedListModel;
-import com.tigrang.cs356.a2.model.User;
 import com.tigrang.cs356.a2.model.UserFollowingListModel;
+import com.tigrang.cs356.a2.model.entity.User;
 import com.tigrang.mvc.view.View;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class UserOverviewView extends View {
+public class UserOverviewDialog extends View {
 
 	private TweetsController tweetsController;
 
@@ -38,10 +38,13 @@ public class UserOverviewView extends View {
 
 	private JList listNewsFeed;
 
-	public UserOverviewView(User user) {
+	public UserOverviewDialog(User user) {
 		this.user = user;
-		this.tweetsController = new TweetsController();
-		this.usersController = new UsersController();
+	}
+
+	public void init(UsersController usersController, TweetsController tweetsController) {
+		this.usersController = usersController;
+		this.tweetsController = tweetsController;
 
 		setupUI();
 		setupModel();

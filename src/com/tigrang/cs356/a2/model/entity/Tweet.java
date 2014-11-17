@@ -1,26 +1,20 @@
-package com.tigrang.cs356.a2.model;
+package com.tigrang.cs356.a2.model.entity;
 
 import com.tigrang.cs356.a2.model.visitor.TweetAcceptor;
 import com.tigrang.cs356.a2.model.visitor.TweetVisitor;
+import com.tigrang.mvc.model.Entity;
 
-import java.time.Instant;
+public abstract class Tweet extends Entity implements TweetAcceptor, Comparable<Tweet> {
 
-public abstract class Tweet implements TweetAcceptor, Comparable<Tweet> {
-
-	private long created;
 	private String message;
 
 	public Tweet(String message) {
+		super();
 		this.message = message;
-		created = Instant.now().getEpochSecond();
 	}
 
 	public String getMessage() {
 		return message;
-	}
-
-	public long getCreated() {
-		return created;
 	}
 
 	@Override

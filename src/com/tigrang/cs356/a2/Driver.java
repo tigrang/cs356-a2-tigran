@@ -1,15 +1,45 @@
 package com.tigrang.cs356.a2;
 
-import com.tigrang.cs356.a2.view.AdminControlPanelView;
+import com.tigrang.cs356.a2.controller.GroupsController;
+import com.tigrang.cs356.a2.controller.TweetsController;
+import com.tigrang.cs356.a2.controller.UsersController;
+import com.tigrang.cs356.a2.model.entity.Group;
+import com.tigrang.cs356.a2.model.entity.Tweet;
+import com.tigrang.cs356.a2.model.entity.User;
+import com.tigrang.cs356.a2.view.AdminControlPanel;
+import com.tigrang.mvc.model.DefaultRepository;
+import com.tigrang.mvc.model.RepositoryManager;
+import com.tigrang.mvc.model.datasource.MemoryEngine;
 
 import javax.swing.*;
 
 public class Driver {
 
 	public static void main(String[] args) {
+		// Initialize models
+		DefaultRepository<User> usersRepository = new DefaultRepository<>(new MemoryEngine<>());
+		DefaultRepository<Group> groupsRepository = new DefaultRepository<>(new MemoryEngine<>());
+		DefaultRepository<Tweet> tweetsRepository = new DefaultRepository<>(new MemoryEngine<>());
+
+		Group root = new Group("Root");
+		root.setId(Group.ROOT_ID);
+		groupsRepository.add(root);
+
+		RepositoryManager.getInstance().register(User.class, usersRepository);
+		RepositoryManager.getInstance().register(Group.class, groupsRepository);
+		RepositoryManager.getInstance().register(Tweet.class, tweetsRepository);
+
+		// Initialize controllers
+		UsersController usersController = new UsersController(usersRepository);
+		GroupsController groupsController = new GroupsController(groupsRepository);
+		TweetsController tweetsController = new TweetsController(tweetsRepository);
+
+		// Initialize the view
 		SwingUtilities.invokeLater(() -> {
 			setLAF();
-			AdminControlPanelView.getInstance().show(true);
+			AdminControlPanel adminControlPanel = AdminControlPanel.getInstance();
+			adminControlPanel.init(usersController, groupsController, tweetsController);
+			adminControlPanel.show(true);
 		});
 	}
 

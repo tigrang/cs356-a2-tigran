@@ -1,32 +1,35 @@
 package com.tigrang.cs356.a2.controller;
 
-import com.tigrang.cs356.a2.model.DataSource;
-import com.tigrang.cs356.a2.model.Group;
+import com.tigrang.cs356.a2.model.entity.Group;
+import com.tigrang.mvc.controller.Controller;
+import com.tigrang.mvc.model.Repository;
 
-public class GroupsController {
+public class GroupsController extends Controller<Group>  {
 
-	public Group add(String name) throws Exception {
+	public GroupsController(Repository<Group> repository) {
+		super(repository);
+	}
+
+	public Group add(Group activeGroup, String name) throws Exception {
 		if (name.isEmpty()) {
 			throw new Exception("Enter a group name.");
 		}
 
-		Group activeGroup = DataSource.get().getActiveGroup();
 		if (activeGroup == null) {
 			throw new Exception("Select a group first.");
 		}
 
-		Group group = Group.newGroup(name);
+		Group group = new Group(name);
 		group.setParent(activeGroup);
-		DataSource.get().getGroups().put(group.getId(), group);
-
+		getRepository().add(group);
 		return group;
 	}
 
-	public void setActive(Group group) {
-		DataSource.get().setActiveGroup(group);
+	public Group view(long id) {
+		return getRepository().findById(id);
 	}
 
 	public int getTotal() {
-		return DataSource.get().getGroups().size();
+		return getRepository().size();
 	}
 }

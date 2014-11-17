@@ -1,24 +1,29 @@
 package com.tigrang.cs356.a2.controller;
 
-import com.tigrang.cs356.a2.model.DataSource;
-import com.tigrang.cs356.a2.model.Group;
-import com.tigrang.cs356.a2.model.User;
+import com.tigrang.cs356.a2.model.entity.Group;
+import com.tigrang.cs356.a2.model.entity.User;
+import com.tigrang.mvc.controller.Controller;
+import com.tigrang.mvc.model.Repository;
 
-public class UsersController {
+public class UsersController extends Controller<User> {
 
-	public User add(String username) throws Exception {
+	public UsersController(Repository<User> repository) {
+		super(repository);
+	}
+
+	public User add(Group group, String username) throws Exception {
 		if (username.isEmpty()) {
 			throw new Exception("Enter a username.");
 		}
 
-		Group group = DataSource.get().getActiveGroup();
 		if (group == null) {
 			throw new Exception("Select a group first.");
 		}
 
-		User user = User.newUser(username);
+		User user = new User(username);
+		getRepository().add(user);
 		user.setGroup(group);
-		DataSource.get().getUsers().put(user.getId(), user);
+
 		return user;
 	}
 
@@ -27,6 +32,6 @@ public class UsersController {
 	}
 
 	public int getTotal() {
-		return DataSource.get().getUsers().size();
+		return getRepository().size();
 	}
 }

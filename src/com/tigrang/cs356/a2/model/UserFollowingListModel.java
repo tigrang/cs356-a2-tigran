@@ -1,5 +1,8 @@
 package com.tigrang.cs356.a2.model;
 
+import com.tigrang.cs356.a2.model.entity.User;
+import com.tigrang.mvc.model.RepositoryManager;
+
 import javax.swing.*;
 import java.util.ArrayList;
 
@@ -19,7 +22,7 @@ public class UserFollowingListModel extends AbstractListModel<User> {
 
 	@Override
 	public User getElementAt(int index) {
-		int id = new ArrayList<>(user.getFollowingIds()).get(index);
-		return DataSource.get().getUsers().get(id);
+		long id = new ArrayList<>(user.getFollowingIds()).get(index);
+		return RepositoryManager.getInstance().get(User.class).findById(id);
 	}
 }

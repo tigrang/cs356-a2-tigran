@@ -19,6 +19,9 @@ public abstract class AbstractTreeModel<T> implements TreeModel {
 		setRoot(root);
 	}
 
+	public abstract Object[] getPathToRoot(Object node);
+
+	@Override
 	public T getRoot() {
 		return root;
 	}
@@ -43,6 +46,24 @@ public abstract class AbstractTreeModel<T> implements TreeModel {
 		}
 	}
 
+	public void nodeStructureChanged(T node) {
+		if (node != null) {
+			fireTreeStructureChanged(this, getPathToRoot(node), null, null);
+		}
+	}
+
+	public void addTreeModelListener(TreeModelListener l) {
+		listenerList.add(TreeModelListener.class, l);
+	}
+
+	public void removeTreeModelListener(TreeModelListener l) {
+		listenerList.remove(TreeModelListener.class, l);
+	}
+
+	public TreeModelListener[] getTreeModelListeners() {
+		return listenerList.getListeners(TreeModelListener.class);
+	}
+
 	protected void nodesWereInserted(T node, int[] childIndices) {
 		if (listenerList != null && node != null && childIndices != null
 				&& childIndices.length > 0) {
@@ -62,26 +83,6 @@ public abstract class AbstractTreeModel<T> implements TreeModel {
 			fireTreeNodesRemoved(this, getPathToRoot(node), childIndices,
 					removedChildren);
 		}
-	}
-
-	public void nodeStructureChanged(T node) {
-		if (node != null) {
-			fireTreeStructureChanged(this, getPathToRoot(node), null, null);
-		}
-	}
-
-	public abstract Object[] getPathToRoot(Object node);
-
-	public void addTreeModelListener(TreeModelListener l) {
-		listenerList.add(TreeModelListener.class, l);
-	}
-
-	public void removeTreeModelListener(TreeModelListener l) {
-		listenerList.remove(TreeModelListener.class, l);
-	}
-
-	public TreeModelListener[] getTreeModelListeners() {
-		return listenerList.getListeners(TreeModelListener.class);
 	}
 
 	protected void fireTreeNodesInserted(Object source, Object[] path,

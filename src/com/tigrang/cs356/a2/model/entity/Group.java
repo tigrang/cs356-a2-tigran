@@ -1,34 +1,32 @@
-package com.tigrang.cs356.a2.model;
+package com.tigrang.cs356.a2.model.entity;
 
 import com.tigrang.cs356.a2.model.visitor.TweetAcceptor;
 import com.tigrang.cs356.a2.model.visitor.TweetVisitor;
 import com.tigrang.cs356.a2.util.IndexedHashMap;
+import com.tigrang.mvc.model.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Group extends Observable implements TweetAcceptor {
+public class Group extends Entity implements TweetAcceptor {
+
+	public static final long ROOT_ID = 1;
 
 	private static AtomicInteger atomicInteger = new AtomicInteger();
 	private List<GroupChangeListener> groupChangeListenerList;
-	private int id;
 	private String name;
-	private IndexedHashMap<Integer, User> users;
-	private IndexedHashMap<Integer, Group> groups;
+
+	private IndexedHashMap<Long, User> users;
+	private IndexedHashMap<Long, Group> groups;
 	private Group parent;
 
-	protected Group(int id, String name) {
-		this.id = id;
+	public Group(String name) {
+		super();
 		this.name = name;
 		this.users = new IndexedHashMap<>();
 		this.groups = new IndexedHashMap<>();
 		groupChangeListenerList = new ArrayList<>();
-	}
-
-	public static Group newGroup(String name) {
-		return new Group(atomicInteger.incrementAndGet(), name);
 	}
 
 	public void addGroupChangeListener(GroupChangeListener listener) {
@@ -63,11 +61,11 @@ public class Group extends Observable implements TweetAcceptor {
 		}
 	}
 
-	public IndexedHashMap<Integer, User> getUsers() {
+	public IndexedHashMap<Long, User> getUsers() {
 		return users;
 	}
 
-	public IndexedHashMap<Integer, Group> getGroups() {
+	public IndexedHashMap<Long, Group> getGroups() {
 		return groups;
 	}
 
@@ -77,10 +75,6 @@ public class Group extends Observable implements TweetAcceptor {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public int getId() {
-		return id;
 	}
 
 	public void addUser(User user) {

@@ -1,5 +1,9 @@
 package com.tigrang.cs356.a2.model;
 
+import com.tigrang.cs356.a2.model.entity.Tweet;
+import com.tigrang.cs356.a2.model.entity.User;
+import com.tigrang.mvc.model.RepositoryManager;
+
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,10 +25,10 @@ public class NewsFeedListModel extends AbstractListModel<Tweet> {
 
 	private void generateFeed() {
 		feed.clear();
-		feed = new ArrayList<>(user.getTweets());
+		feed.addAll(user.getTweets());
 
-		for (int id : user.getFollowingIds()) {
-			feed.addAll(DataSource.get().getUsers().get(id).getTweets());
+		for (long id : user.getFollowingIds()) {
+			feed.addAll(RepositoryManager.getInstance().get(User.class).findById(id).getTweets());
 		}
 
 		Collections.sort(feed);

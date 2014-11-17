@@ -1,29 +1,27 @@
-package com.tigrang.cs356.a2.model;
+package com.tigrang.cs356.a2.model.entity;
 
 import com.tigrang.cs356.a2.model.visitor.TweetAcceptor;
 import com.tigrang.cs356.a2.model.visitor.TweetVisitor;
+import com.tigrang.mvc.model.Entity;
+import com.tigrang.mvc.model.RepositoryManager;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
-public class User extends Observable implements TweetAcceptor {
+public class User extends Entity implements TweetAcceptor {
 
-	private static AtomicInteger atomicInteger = new AtomicInteger();
-	private int id;
 	private String username;
 	private Group group;
 	private List<Tweet> tweets;
-	private Set<Integer> following;
+	private Set<Long> following;
 
-	protected User(int id, String username) {
-		this.id = id;
+	public User(String username) {
+		super();
 		this.username = username;
 		this.tweets = new ArrayList<>();
 		this.following = new LinkedHashSet<>();
-	}
-
-	public static User newUser(String username) {
-		return new User(atomicInteger.incrementAndGet(), username);
 	}
 
 	public void addTweet(Tweet tweet) {
@@ -31,8 +29,8 @@ public class User extends Observable implements TweetAcceptor {
 		setChanged();
 		notifyObservers();
 
-		for (int id : following) {
-			User user = DataSource.get().getUsers().get(id);
+		for (long id : following) {
+			User user = RepositoryManager.getInstance().get(User.class).findById(id);
 			user.setChanged();
 			user.notifyObservers();
 		}
@@ -56,7 +54,7 @@ public class User extends Observable implements TweetAcceptor {
 		notifyObservers();
 	}
 
-	public Set<Integer> getFollowingIds() {
+	public Set<Long> getFollowingIds() {
 		return following;
 	}
 
@@ -64,7 +62,7 @@ public class User extends Observable implements TweetAcceptor {
 		follow(user.getId());
 	}
 
-	public void follow(int id) {
+	public void follow(long id) {
 		following.add(id);
 		setChanged();
 		notifyObservers();
@@ -72,10 +70,6 @@ public class User extends Observable implements TweetAcceptor {
 
 	public String getUsername() {
 		return username;
-	}
-
-	public int getId() {
-		return id;
 	}
 
 	public String toString() {

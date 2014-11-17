@@ -1,12 +1,19 @@
 package com.tigrang.cs356.a2.controller;
 
-import com.tigrang.cs356.a2.model.DataSource;
-import com.tigrang.cs356.a2.model.TextTweet;
-import com.tigrang.cs356.a2.model.User;
+import com.tigrang.cs356.a2.model.entity.TextTweet;
+import com.tigrang.cs356.a2.model.entity.Group;
+import com.tigrang.cs356.a2.model.entity.Tweet;
+import com.tigrang.cs356.a2.model.entity.User;
 import com.tigrang.cs356.a2.model.visitor.PositiveTweetCountVisitor;
 import com.tigrang.cs356.a2.model.visitor.TweetCountVisitor;
+import com.tigrang.mvc.controller.Controller;
+import com.tigrang.mvc.model.Repository;
 
-public class TweetsController {
+public class TweetsController extends Controller<Tweet> {
+
+	public TweetsController(Repository<Tweet> repository) {
+		super(repository);
+	}
 
 	public TextTweet add(User user, String message) throws Exception {
 		if (message.isEmpty()) {
@@ -18,15 +25,15 @@ public class TweetsController {
 		return tweet;
 	}
 
-	public int getTotal() {
+	public int getTotal(Group root) {
 		TweetCountVisitor tweetCountVisitor = new TweetCountVisitor();
-		DataSource.get().getRoot().accept(tweetCountVisitor);
+		root.accept(tweetCountVisitor);
 		return tweetCountVisitor.getCount();
 	}
 
-	public double getPositivePercentage() {
+	public double getPositivePercentage(Group root) {
 		PositiveTweetCountVisitor positiveMessageVisitor = new PositiveTweetCountVisitor();
-		DataSource.get().getRoot().accept(positiveMessageVisitor);
+		root.accept(positiveMessageVisitor);
 		return positiveMessageVisitor.getPositivePercentage();
 	}
 }
