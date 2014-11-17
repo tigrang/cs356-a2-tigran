@@ -10,27 +10,27 @@ import javax.swing.tree.TreeSelectionModel;
 
 public class AdminControlPanelView extends com.tigrang.mvc.view.View {
 
-	@ViewElement(id = "frame")
+	@ViewElement
 	private JFrame frame;
-	@ViewElement(id = "container")
+	@ViewElement
 	private JPanel container;
 	@ViewElement(id = "username")
 	private JTextField txtUsername;
-	@ViewElement(id = "add_user_btn")
+	@ViewElement(id = "add_user")
 	private JButton btnAddUser;
 	@ViewElement(id = "group_name")
 	private JTextField txtGroupName;
-	@ViewElement(id = "add_group_btn")
+	@ViewElement(id = "add_group")
 	private JButton btnAddGroup;
-	@ViewElement(id = "show_user_total_btn")
+	@ViewElement(id = "show_user_total")
 	private JButton btnShowUserTotal;
-	@ViewElement(id = "show_group_total_btn")
+	@ViewElement(id = "show_group_total")
 	private JButton btnShowGroupTotal;
-	@ViewElement(id = "show_messages_total_btn")
+	@ViewElement(id = "show_messages_total")
 	private JButton btnShowMessagesTotal;
-	@ViewElement(id = "show_pos_percentage_btn")
+	@ViewElement(id = "show_pos_percentage")
 	private JButton btnShowPositivePercentage;
-	@ViewElement(id = "open_user_view_btn")
+	@ViewElement(id = "open_user_view")
 	private JButton btnOpenUserView;
 	@ViewElement(id = "tree")
 	private JTree treeUsers;

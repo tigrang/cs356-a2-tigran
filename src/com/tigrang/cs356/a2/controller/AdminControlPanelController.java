@@ -37,27 +37,27 @@ public class AdminControlPanelController extends Controller {
 
 	private void addDelegates() {
 		// Connect add new user/group buttons
-		view.addDelegate(R.id.add_user_btn, new AddNewUserDelegate(view));
-		view.addDelegate(R.id.add_group_btn, new AddNewGroupDelegate(view));
+		view.addDelegate(R.id.add_user, new AddNewUserDelegate(view));
+		view.addDelegate(R.id.add_group, new AddNewGroupDelegate(view));
 
 		// Connect group select change
 		view.addDelegate(R.id.tree, new UpdateActiveGroupNodeDelegate());
 
 		// Connect open user dialog button
-		view.addDelegate(R.id.open_user_view_btn, new OpenUserDialogDelegate(view));
+		view.addDelegate(R.id.open_user_view, new OpenUserDialogDelegate(view));
 
 		// Connect the show total dialog buttons
-		view.addDelegate(R.id.show_user_total_btn,
+		view.addDelegate(R.id.show_user_total,
 				new ShowTotalDialogDelegate(view, "users", () -> DataSource.get().getUsers().size()));
-		view.addDelegate(R.id.show_group_total_btn,
+		view.addDelegate(R.id.show_group_total,
 				new ShowTotalDialogDelegate(view, "groups", () -> DataSource.get().getGroups().size()));
-		view.addDelegate(R.id.show_messages_total_btn,
+		view.addDelegate(R.id.show_messages_total,
 				new ShowTotalDialogDelegate(view, "messages", () -> {
 					TweetCountVisitor tweetCountVisitor = new TweetCountVisitor();
 					DataSource.get().getRoot().accept(tweetCountVisitor);
 					return tweetCountVisitor.getCount();
 				}));
-		view.addDelegate(R.id.show_pos_percentage_btn, new ActionDelegate() {
+		view.addDelegate(R.id.show_pos_percentage, new ActionDelegate() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				PositiveTweetCountVisitor positiveMessageVisitor = new PositiveTweetCountVisitor();
