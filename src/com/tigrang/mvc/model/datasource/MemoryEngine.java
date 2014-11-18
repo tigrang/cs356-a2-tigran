@@ -1,19 +1,20 @@
 package com.tigrang.mvc.model.datasource;
 
 import com.tigrang.mvc.model.Entity;
-import com.tigrang.mvc.util.IndexedHashMap;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class MemoryEngine<E extends Entity> implements StorageEngine<E> {
 
-	private IndexedHashMap<Long, E> storage;
+	private Map<Long, E> storage;
 
 	private AtomicLong idGenerator;
 
 	public MemoryEngine() {
 		this.idGenerator = new AtomicLong();
-		this.storage = new IndexedHashMap<>();
+		this.storage = new HashMap<>();
 	}
 
 	@Override
