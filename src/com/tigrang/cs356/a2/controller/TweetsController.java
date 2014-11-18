@@ -22,6 +22,7 @@ public class TweetsController extends Controller<Tweet> {
 
 		TextTweet tweet = new TextTweet(message);
 		user.addTweet(tweet);
+		getRepository().add(tweet);
 		return tweet;
 	}
 
