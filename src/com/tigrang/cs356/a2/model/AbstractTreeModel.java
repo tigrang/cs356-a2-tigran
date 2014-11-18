@@ -26,14 +26,15 @@ public abstract class AbstractTreeModel<T> implements TreeModel {
 		return root;
 	}
 
-	public void setRoot(T root) {
-		Object oldRoot = this.root;
+	public T setRoot(T root) {
+		T oldRoot = this.root;
 		this.root = root;
 		if (root == null && oldRoot != null) {
 			fireTreeStructureChanged(this, null);
 		} else {
 			nodeStructureChanged(root);
 		}
+		return oldRoot;
 	}
 
 	public void reload() {
@@ -62,6 +63,21 @@ public abstract class AbstractTreeModel<T> implements TreeModel {
 
 	public TreeModelListener[] getTreeModelListeners() {
 		return listenerList.getListeners(TreeModelListener.class);
+	}
+
+	protected void nodeInserted(T parent, Object child) {
+		int[] newIndexes = new int[1];
+		newIndexes[0] = getIndexOfChild(parent, child);
+		nodesWereInserted(parent, newIndexes);
+	}
+
+	protected void nodeRemoved(T parent, Object child) {
+		int[] childIndex = new int[1];
+		Object[] removedArray = new Object[1];
+
+		childIndex[0] = getIndexOfChild(parent, child);
+		removedArray[0] = child;
+		nodesWereRemoved(parent, childIndex, removedArray);
 	}
 
 	protected void nodesWereInserted(T node, int[] childIndices) {

@@ -1,7 +1,7 @@
 package com.tigrang.mvc.model.datasource;
 
 import com.tigrang.mvc.model.Entity;
-import com.tigrang.cs356.a2.util.IndexedHashMap;
+import com.tigrang.mvc.util.IndexedHashMap;
 
 import java.util.concurrent.atomic.AtomicLong;
 

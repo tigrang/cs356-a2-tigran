@@ -3,7 +3,7 @@ package com.tigrang.mvc.model;
 import java.time.Instant;
 import java.util.Observable;
 
-public abstract class Entity extends Observable {
+public abstract class Entity extends Observable implements Comparable<Entity> {
 
 	protected Long id;
 
@@ -33,4 +33,8 @@ public abstract class Entity extends Observable {
 		notifyObservers();
 	}
 
+	@Override
+	public int compareTo(Entity o) {
+		return Long.compare(created, o.created);
+	}
 }

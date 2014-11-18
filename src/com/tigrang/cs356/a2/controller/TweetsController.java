@@ -1,7 +1,7 @@
 package com.tigrang.cs356.a2.controller;
 
-import com.tigrang.cs356.a2.model.entity.TextTweet;
 import com.tigrang.cs356.a2.model.entity.Group;
+import com.tigrang.cs356.a2.model.entity.TextTweet;
 import com.tigrang.cs356.a2.model.entity.Tweet;
 import com.tigrang.cs356.a2.model.entity.User;
 import com.tigrang.cs356.a2.model.visitor.PositiveTweetCountVisitor;

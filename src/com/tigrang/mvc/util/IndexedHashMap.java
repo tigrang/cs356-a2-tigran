@@ -1,11 +1,10 @@
-package com.tigrang.cs356.a2.util;
+package com.tigrang.mvc.util;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * TODO: Optimize
- *
  *
  * @param <K>
  * @param <V>

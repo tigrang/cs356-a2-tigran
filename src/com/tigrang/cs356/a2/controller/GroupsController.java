@@ -4,7 +4,7 @@ import com.tigrang.cs356.a2.model.entity.Group;
 import com.tigrang.mvc.controller.Controller;
 import com.tigrang.mvc.model.Repository;
 
-public class GroupsController extends Controller<Group>  {
+public class GroupsController extends Controller<Group> {
 
 	public GroupsController(Repository<Group> repository) {
 		super(repository);
