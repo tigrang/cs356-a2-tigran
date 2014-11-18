@@ -21,7 +21,7 @@ public class RepositoryManager {
 		repositoryMap.put(eClass, repository);
 	}
 
-	public <R extends Repository<E>, E extends Entity> R get(Class<E> eClass) {
+	public <E extends Entity, R extends Repository<E>> R get(Class<E> eClass) {
 		return (R) repositoryMap.get(eClass);
 	}
 }

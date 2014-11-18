@@ -4,8 +4,8 @@ import com.tigrang.cs356.a2.model.entity.Group;
 import com.tigrang.cs356.a2.model.entity.User;
 
 import javax.swing.tree.TreePath;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class UserTreeModel extends AbstractTreeModel<Group> implements Group.GroupChangeListener {
 
@@ -52,19 +52,19 @@ public class UserTreeModel extends AbstractTreeModel<Group> implements Group.Gro
 
 	@Override
 	public Object[] getPathToRoot(Object node) {
-		List<Object> path = new ArrayList<>();
+		Deque<Object> path = new ArrayDeque<>();
 		path.add(node);
 
 		Group group;
 		if (node instanceof User) {
 			group = ((User) node).getGroup();
-			path.add(0, group);
+			path.addFirst(group);
 		} else {
 			group = (Group) node;
 		}
 
 		while (group.getParent() != null) {
-			path.add(0, group.getParent());
+			path.addFirst(group.getParent());
 			group = group.getParent();
 		}
 

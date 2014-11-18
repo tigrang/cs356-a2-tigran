@@ -5,7 +5,6 @@ import com.tigrang.cs356.a2.model.visitor.TweetVisitor;
 import com.tigrang.mvc.model.Entity;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Group extends Entity implements TweetAcceptor {
@@ -14,9 +13,9 @@ public class Group extends Entity implements TweetAcceptor {
 
 	private List<GroupChangeListener> groupChangeListenerList;
 	private String name;
-
 	private List<User> users;
 	private List<Group> groups;
+	private List<Entity> children;
 	private Group parent;
 
 	public Group(String name) {
@@ -24,13 +23,11 @@ public class Group extends Entity implements TweetAcceptor {
 		this.name = name;
 		this.users = new ArrayList<>();
 		this.groups = new ArrayList<>();
-		groupChangeListenerList = new ArrayList<>();
+		this.children = new ArrayList<>();
+		this.groupChangeListenerList = new ArrayList<>();
 	}
 
 	public List<Entity> getChildren() {
-		List<Entity> children = new ArrayList<>(groups);
-		children.addAll(users);
-		Collections.sort(children);
 		return children;
 	}
 
@@ -62,6 +59,7 @@ public class Group extends Entity implements TweetAcceptor {
 		if (users.contains(user)) {
 			return;
 		}
+		children.add(user);
 		users.add(user);
 		user.setGroup(this);
 		setChanged();
@@ -70,6 +68,7 @@ public class Group extends Entity implements TweetAcceptor {
 	}
 
 	public void removeUser(User user) {
+		children.remove(user);
 		users.remove(user.getId());
 		user.setGroup(null);
 		setChanged();
@@ -82,6 +81,7 @@ public class Group extends Entity implements TweetAcceptor {
 			return;
 		}
 
+		children.add(group);
 		groups.add(group);
 		group.setParent(this);
 		setChanged();
@@ -90,7 +90,8 @@ public class Group extends Entity implements TweetAcceptor {
 	}
 
 	public void removeGroup(Group group) {
-		groups.remove(group.getId());
+		children.remove(group);
+		groups.remove(group);
 		setChanged();
 		notifyObservers();
 		notifyGroupRemoved(group);
