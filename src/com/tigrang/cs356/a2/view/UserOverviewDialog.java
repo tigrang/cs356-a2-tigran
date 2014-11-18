@@ -62,6 +62,8 @@ public class UserOverviewDialog extends View {
 				clearFollowerId();
 			} catch (NumberFormatException e) {
 				showError("Enter a valid user id", txtUserId);
+			} catch (Exception e) {
+				showError(e.getMessage(), txtUserId);
 			}
 		});
 

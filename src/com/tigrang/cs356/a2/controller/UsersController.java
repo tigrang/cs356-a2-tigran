@@ -27,7 +27,15 @@ public class UsersController extends Controller<User> {
 		return user;
 	}
 
-	public void follow(User user, int followerId) {
+	public void follow(User user, int followerId) throws Exception {
+		if (user.getId() == followerId) {
+			throw new Exception("Cannot follow yourself.");
+		}
+
+		if (getRepository().findById(followerId) == null) {
+			throw new Exception("User does not exist.");
+		}
+
 		user.follow(followerId);
 	}
 
