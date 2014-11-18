@@ -24,10 +24,20 @@ public abstract class Controller<E extends Entity> {
 		this.repository = repository;
 	}
 
+	/**
+	 * Get the main repository for this controller
+	 *
+	 * @return
+	 */
 	public Repository<E> getRepository() {
 		return repository;
 	}
 
+	/**
+	 * Sets the main repository for this controller
+	 *
+	 * @param repository
+	 */
 	public void setRepository(Repository<E> repository) {
 		this.repository = repository;
 	}
@@ -49,6 +59,4 @@ public abstract class Controller<E extends Entity> {
 	public void setView(View view) {
 		this.view = view;
 	}
-
-
 }
