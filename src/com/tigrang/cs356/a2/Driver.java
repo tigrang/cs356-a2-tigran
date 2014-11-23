@@ -20,10 +20,7 @@ public class Driver {
 		DefaultRepository<User> usersRepository = new DefaultRepository<>(new MemoryEngine<>());
 		DefaultRepository<Group> groupsRepository = new DefaultRepository<>(new MemoryEngine<>());
 		DefaultRepository<Tweet> tweetsRepository = new DefaultRepository<>(new MemoryEngine<>());
-
-		Group root = new Group("Root");
-		root.setId(Group.ROOT_ID);
-		groupsRepository.add(root);
+		groupsRepository.add(new Group("Root"));
 
 		RepositoryManager.getInstance().register(User.class, usersRepository);
 		RepositoryManager.getInstance().register(Group.class, groupsRepository);
@@ -38,7 +35,11 @@ public class Driver {
 		SwingUtilities.invokeLater(() -> {
 			setLAF();
 			AdminControlPanel adminControlPanel = AdminControlPanel.getInstance();
-			adminControlPanel.init(usersController, groupsController, tweetsController);
+			adminControlPanel.setUsersController(usersController);
+			adminControlPanel.setGroupsController(groupsController);
+			adminControlPanel.setTweetsController(tweetsController);
+
+			adminControlPanel.init();
 			adminControlPanel.show(true);
 		});
 	}

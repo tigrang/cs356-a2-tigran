@@ -16,35 +16,20 @@ public class AdminControlPanel extends com.tigrang.mvc.view.View {
 	private static final AdminControlPanel INSTANCE = new AdminControlPanel();
 
 	private UserTreeModel model;
-
 	private UsersController usersController;
-
 	private GroupsController groupsController;
-
 	private TweetsController tweetsController;
-
 	private JFrame frame;
-
 	private JPanel container;
-
 	private JTextField txtUsername;
-
 	private JButton btnAddUser;
-
 	private JTextField txtGroupName;
-
 	private JButton btnAddGroup;
-
 	private JButton btnShowUserTotal;
-
 	private JButton btnShowGroupTotal;
-
 	private JButton btnShowMessagesTotal;
-
 	private JButton btnShowPositivePercentage;
-
 	private JButton btnOpenUserView;
-
 	private JTree treeUsers;
 
 	private AdminControlPanel() {
@@ -60,11 +45,7 @@ public class AdminControlPanel extends com.tigrang.mvc.view.View {
 		return INSTANCE;
 	}
 
-	public void init(UsersController usersController, GroupsController groupsController, TweetsController tweetsController) {
-		this.usersController = usersController;
-		this.groupsController = groupsController;
-		this.tweetsController = tweetsController;
-
+	public void init() {
 		createFrame();
 		setupUI();
 		setupActions();
@@ -88,6 +69,7 @@ public class AdminControlPanel extends com.tigrang.mvc.view.View {
 		frame.setContentPane(container);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
+		frame.setSize(600, 500);
 		setRoot(frame);
 	}
 
@@ -129,7 +111,9 @@ public class AdminControlPanel extends com.tigrang.mvc.view.View {
 			}
 
 			UserOverviewDialog userOverviewDialog = new UserOverviewDialog((User) node);
-			userOverviewDialog.init(usersController, tweetsController);
+			userOverviewDialog.setUsersController(usersController);
+			userOverviewDialog.setTweetsController(tweetsController);
+			userOverviewDialog.init();
 			userOverviewDialog.show(true);
 		});
 
@@ -145,6 +129,30 @@ public class AdminControlPanel extends com.tigrang.mvc.view.View {
 		btnShowPositivePercentage.addActionListener((ae) -> showMessage(
 				String.format("There are %.1f%% positive messages.",
 						tweetsController.getPositivePercentage(model.getRoot()))));
+	}
+
+	public UsersController getUsersController() {
+		return usersController;
+	}
+
+	public void setUsersController(UsersController usersController) {
+		this.usersController = usersController;
+	}
+
+	public GroupsController getGroupsController() {
+		return groupsController;
+	}
+
+	public void setGroupsController(GroupsController groupsController) {
+		this.groupsController = groupsController;
+	}
+
+	public TweetsController getTweetsController() {
+		return tweetsController;
+	}
+
+	public void setTweetsController(TweetsController tweetsController) {
+		this.tweetsController = tweetsController;
 	}
 
 	/**

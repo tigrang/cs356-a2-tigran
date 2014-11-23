@@ -8,6 +8,7 @@ import com.tigrang.cs356.a2.model.entity.User;
 import com.tigrang.mvc.view.View;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class UserOverviewDialog extends View {
 
@@ -46,13 +47,38 @@ public class UserOverviewDialog extends View {
 		this.user = user;
 	}
 
-	public void init(UsersController usersController, TweetsController tweetsController) {
-		this.usersController = usersController;
-		this.tweetsController = tweetsController;
-
+	public void init() {
 		setupUI();
 		setupModel();
 		setupActions();
+	}
+
+	public TweetsController getTweetsController() {
+		return tweetsController;
+	}
+
+	public void setTweetsController(TweetsController tweetsController) {
+		this.tweetsController = tweetsController;
+	}
+
+	public UsersController getUsersController() {
+		return usersController;
+	}
+
+	public void setUsersController(UsersController usersController) {
+		this.usersController = usersController;
+	}
+
+	/**
+	 * Sets up the initial view
+	 */
+	public void setupUI() {
+		frame = new JFrame();
+		frame.setContentPane(container);
+		frame.pack();
+		frame.setSize(500, 500);
+		setRoot(frame);
+		setTitle();
 	}
 
 	/**
@@ -78,17 +104,6 @@ public class UserOverviewDialog extends View {
 				showError(e.getMessage(), txtTweet);
 			}
 		});
-	}
-
-	/**
-	 * Sets up the initial view
-	 */
-	public void setupUI() {
-		frame = new JFrame();
-		frame.setContentPane(container);
-		frame.pack();
-		setRoot(frame);
-		setTitle();
 	}
 
 	/**
