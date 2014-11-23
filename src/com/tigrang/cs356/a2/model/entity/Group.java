@@ -27,34 +27,74 @@ public class Group extends Entity implements TweetAcceptor {
 		this.groupChangeListenerList = new ArrayList<>();
 	}
 
+	/**
+	 * Gets a list of children in this group
+	 *
+	 * @return
+	 */
 	public List<Entity> getChildren() {
 		return children;
 	}
 
+	/**
+	 * Attach an event listener for changes in this group
+	 *
+	 * @param listener
+	 */
 	public void addGroupChangeListener(GroupChangeListener listener) {
 		groupChangeListenerList.add(listener);
 	}
 
+	/**
+	 * Removes an event listener
+	 *
+	 * @param listener
+	 */
 	public void removeGroupChangeListener(GroupChangeListener listener) {
 		groupChangeListenerList.remove(listener);
 	}
 
+	/**
+	 * Gets a list of all users in this group
+	 *
+	 * @return
+	 */
 	public List<User> getUsers() {
 		return users;
 	}
 
+	/**
+	 * Returns a list of all sub-groups in this group
+	 *
+	 * @return
+	 */
 	public List<Group> getGroups() {
 		return groups;
 	}
 
+	/**
+	 * Gets the name of this group
+	 *
+	 * @return
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Sets the name of this group
+	 *
+	 * @param name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Adds a user to this group
+	 *
+	 * @param user
+	 */
 	public void addUser(User user) {
 		if (users.contains(user)) {
 			return;
@@ -67,6 +107,11 @@ public class Group extends Entity implements TweetAcceptor {
 		notifyUserAdded(user);
 	}
 
+	/**
+	 * Removes a user from this group
+	 *
+	 * @param user
+	 */
 	public void removeUser(User user) {
 		children.remove(user);
 		users.remove(user.getId());
@@ -76,6 +121,11 @@ public class Group extends Entity implements TweetAcceptor {
 		notifyUserRemoved(user);
 	}
 
+	/**
+	 * Adds a sub-group to this group
+	 *
+	 * @param group
+	 */
 	public void addGroup(Group group) {
 		if (groups.contains(group)) {
 			return;
@@ -89,6 +139,11 @@ public class Group extends Entity implements TweetAcceptor {
 		notifyGroupAdded(group);
 	}
 
+	/**
+	 * Removes a sub-group from this group
+	 *
+	 * @param group
+	 */
 	public void removeGroup(Group group) {
 		children.remove(group);
 		groups.remove(group);
@@ -97,10 +152,20 @@ public class Group extends Entity implements TweetAcceptor {
 		notifyGroupRemoved(group);
 	}
 
+	/**
+	 * Gets the parent of this group
+	 *
+	 * @return
+	 */
 	public Group getParent() {
 		return parent;
 	}
 
+	/**
+	 * Sets the parent for this group
+	 *
+	 * @param group
+	 */
 	public void setParent(Group group) {
 		this.parent = group;
 		if (!group.getGroups().contains(group)) {
@@ -110,6 +175,11 @@ public class Group extends Entity implements TweetAcceptor {
 		notifyObservers();
 	}
 
+	/**
+	 * toString()
+	 *
+	 * @return
+	 */
 	public String toString() {
 		return name;
 	}
@@ -120,24 +190,44 @@ public class Group extends Entity implements TweetAcceptor {
 		users.forEach((user) -> user.accept(visitor));
 	}
 
+	/**
+	 * Notify all listeners that a group was added to this group
+	 *
+	 * @param group
+	 */
 	protected void notifyGroupAdded(Group group) {
 		for (GroupChangeListener listener : groupChangeListenerList) {
 			listener.onGroupAdded(this, group);
 		}
 	}
 
+	/**
+	 * Notify all listeners that a group was removed to this group
+	 *
+	 * @param group
+	 */
 	protected void notifyGroupRemoved(Group group) {
 		for (GroupChangeListener listener : groupChangeListenerList) {
 			listener.onGroupRemoved(this, group);
 		}
 	}
 
+	/**
+	 * Notify all listeners that a user was added to this group
+	 *
+	 * @param user
+	 */
 	protected void notifyUserAdded(User user) {
 		for (GroupChangeListener listener : groupChangeListenerList) {
 			listener.onUserAdded(this, user);
 		}
 	}
 
+	/**
+	 * Notify all listeners that a user was removed to this group
+	 *
+	 * @param user
+	 */
 	protected void notifyUserRemoved(User user) {
 		for (GroupChangeListener listener : groupChangeListenerList) {
 			listener.onUserRemoved(this, user);

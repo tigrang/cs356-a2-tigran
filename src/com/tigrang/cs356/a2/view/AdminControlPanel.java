@@ -10,7 +10,6 @@ import com.tigrang.cs356.a2.model.entity.User;
 import javax.swing.*;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
-import java.awt.*;
 
 public class AdminControlPanel extends com.tigrang.mvc.view.View {
 
@@ -52,6 +51,11 @@ public class AdminControlPanel extends com.tigrang.mvc.view.View {
 
 	}
 
+	/**
+	 * Singleton
+	 *
+	 * @return AdminControlPanel instance
+	 */
 	public static AdminControlPanel getInstance() {
 		return INSTANCE;
 	}
@@ -66,11 +70,9 @@ public class AdminControlPanel extends com.tigrang.mvc.view.View {
 		setupActions();
 	}
 
-	public void show(boolean visible) {
-		getRoot().setVisible(visible);
-	}
-
-	@Override
+	/**
+	 * Sets up UI models and initial view settings
+	 */
 	public void setupUI() {
 		model = new UserTreeModel(groupsController.view(Group.ROOT_ID));
 		treeUsers.setModel(model);
@@ -78,6 +80,9 @@ public class AdminControlPanel extends com.tigrang.mvc.view.View {
 		treeUsers.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 	}
 
+	/**
+	 * Create the main frame
+	 */
 	private void createFrame() {
 		frame = new JFrame("Mini Twitter: Admin Control Panel");
 		frame.setContentPane(container);
@@ -86,6 +91,9 @@ public class AdminControlPanel extends com.tigrang.mvc.view.View {
 		setRoot(frame);
 	}
 
+	/**
+	 * Connects user UI events to controller actions
+	 */
 	private void setupActions() {
 		btnAddUser.addActionListener((ae) -> {
 			try {
@@ -139,22 +147,43 @@ public class AdminControlPanel extends com.tigrang.mvc.view.View {
 						tweetsController.getPositivePercentage(model.getRoot()))));
 	}
 
+	/**
+	 * Gets the text the user entered in username field
+	 *
+	 * @return text of username field
+	 */
 	public String getUsername() {
 		return txtUsername.getText();
 	}
 
+	/**
+	 * Clears the text inside of username text field
+	 */
 	public void clearUsername() {
 		txtUsername.setText("");
 	}
 
+	/**
+	 * Gets the text the user entered in group field
+	 *
+	 * @return text of the group field
+	 */
 	public String getGroupName() {
 		return txtGroupName.getText();
 	}
 
+	/**
+	 * Clears the text inside of group text field
+	 */
 	public void clearGroupName() {
 		txtGroupName.setText("");
 	}
 
+	/**
+	 * Returns the selected group in the tree
+	 *
+	 * @return selected Group
+	 */
 	public Group getSelectedGroup() {
 		TreePath path = treeUsers.getSelectionPath();
 		if (path == null) {
@@ -168,18 +197,15 @@ public class AdminControlPanel extends com.tigrang.mvc.view.View {
 		return (Group) node;
 	}
 
+	/**
+	 * Selects the given object in the tree and scrolls to it to make it visible
+	 * in the viewport
+	 *
+	 * @param object
+	 */
 	public void selectAndScrollTo(Object object) {
 		TreePath path = new TreePath(model.getPathToRoot(object));
 		treeUsers.setSelectionPath(path);
 		treeUsers.scrollPathToVisible(path);
-	}
-
-	public void showMessage(String message) {
-		JOptionPane.showMessageDialog(getRoot(), message);
-	}
-
-	public void showError(String message, Component component) {
-		JOptionPane.showMessageDialog(getRoot(), message, "Error", JOptionPane.ERROR_MESSAGE);
-		component.requestFocus();
 	}
 }

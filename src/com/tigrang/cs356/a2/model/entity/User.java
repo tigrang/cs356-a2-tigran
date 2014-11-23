@@ -24,6 +24,11 @@ public class User extends Entity implements TweetAcceptor {
 		this.following = new LinkedHashSet<>();
 	}
 
+	/**
+	 * Submit a tweet by this user
+	 *
+	 * @param tweet
+	 */
 	public void addTweet(Tweet tweet) {
 		tweets.add(tweet);
 		setChanged();
@@ -36,14 +41,29 @@ public class User extends Entity implements TweetAcceptor {
 		}
 	}
 
+	/**
+	 * Gets a list of tweets made by this user
+	 *
+	 * @return
+	 */
 	public List<Tweet> getTweets() {
 		return tweets;
 	}
 
+	/**
+	 * Gets the group this user belongs to
+	 *
+	 * @return
+	 */
 	public Group getGroup() {
 		return group;
 	}
 
+	/**
+	 * Set the group this user belongs to
+	 *
+	 * @param group
+	 */
 	public void setGroup(Group group) {
 		if (this.group == group) {
 			return;
@@ -54,20 +74,40 @@ public class User extends Entity implements TweetAcceptor {
 		notifyObservers();
 	}
 
+	/**
+	 * Get a list of follower ids
+	 *
+	 * @return
+	 */
 	public Set<Long> getFollowingIds() {
 		return following;
 	}
 
+	/**
+	 * Add a follower by user object
+	 *
+	 * @param user
+	 */
 	public void follow(User user) {
 		follow(user.getId());
 	}
 
+	/**
+	 * Add a follower by user id
+	 *
+	 * @param id
+	 */
 	public void follow(long id) {
 		following.add(id);
 		setChanged();
 		notifyObservers();
 	}
 
+	/**
+	 * Gets the username for this user
+	 *
+	 * @return
+	 */
 	public String getUsername() {
 		return username;
 	}

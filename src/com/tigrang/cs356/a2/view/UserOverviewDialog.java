@@ -8,7 +8,6 @@ import com.tigrang.cs356.a2.model.entity.User;
 import com.tigrang.mvc.view.View;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class UserOverviewDialog extends View {
 
@@ -38,6 +37,11 @@ public class UserOverviewDialog extends View {
 
 	private JList listNewsFeed;
 
+	/**
+	 * Constructor
+	 *
+	 * @param user The user this view is for
+	 */
 	public UserOverviewDialog(User user) {
 		this.user = user;
 	}
@@ -51,10 +55,9 @@ public class UserOverviewDialog extends View {
 		setupActions();
 	}
 
-	public void show(boolean visible) {
-		getRoot().setVisible(visible);
-	}
-
+	/**
+	 * Connects user UI events to controller actions
+	 */
 	private void setupActions() {
 		followUserButton.addActionListener((ae) -> {
 			try {
@@ -77,7 +80,9 @@ public class UserOverviewDialog extends View {
 		});
 	}
 
-	@Override
+	/**
+	 * Sets up the initial view
+	 */
 	public void setupUI() {
 		frame = new JFrame();
 		frame.setContentPane(container);
@@ -86,6 +91,9 @@ public class UserOverviewDialog extends View {
 		setTitle();
 	}
 
+	/**
+	 * Set up view models
+	 */
 	private void setupModel() {
 		followingListModel = new UserFollowingListModel(user);
 		newsFeedListModel = new NewsFeedListModel(user);
@@ -94,28 +102,42 @@ public class UserOverviewDialog extends View {
 		listNewsFeed.setModel(newsFeedListModel);
 	}
 
+	/**
+	 * Sets the title of the frame
+	 */
 	public void setTitle() {
 		frame.setTitle("User Overview: " + user);
 	}
 
+	/**
+	 * Gets the text user entered for follower id field and converts it into an int
+	 *
+	 * @return integer of the follower id
+	 */
 	public int getFollowerId() {
 		return Integer.parseInt(txtUserId.getText());
 	}
 
+	/**
+	 * Clears the follower id text field
+	 */
 	public void clearFollowerId() {
 		txtUserId.setText("");
 	}
 
+	/**
+	 * Gets the text the user entered in message text field
+	 *
+	 * @return tweet message string
+	 */
 	public String getTextTweetMessage() {
 		return txtTweet.getText();
 	}
 
+	/**
+	 * Clears the tweet text message text field
+	 */
 	public void clearTextTweetMessage() {
 		txtTweet.setText("");
-	}
-
-	public void showError(String message, Component component) {
-		JOptionPane.showMessageDialog(getRoot(), message, "Error", JOptionPane.ERROR_MESSAGE);
-		component.requestFocus();
 	}
 }

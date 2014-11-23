@@ -13,6 +13,11 @@ public abstract class Tweet extends Entity implements TweetAcceptor {
 		this.message = message;
 	}
 
+	/**
+	 * Gets the message of this tweet
+	 *
+	 * @return
+	 */
 	public String getMessage() {
 		return message;
 	}
@@ -22,12 +27,18 @@ public abstract class Tweet extends Entity implements TweetAcceptor {
 		tweetVisitor.atTweet(this);
 	}
 
-	public String toString() {
-		return message;
-	}
-
+	/**
+	 * Sort tweets in desc order to show newer tweets on top
+	 *
+	 * @param o
+	 * @return
+	 */
 	@Override
 	public int compareTo(Entity o) {
-		return super.compareTo(o) * -1;
+		return -super.compareTo(o);
+	}
+
+	public String toString() {
+		return message;
 	}
 }
