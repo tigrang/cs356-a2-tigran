@@ -8,8 +8,11 @@ public abstract class Tweet extends Entity implements TweetAcceptor {
 
 	private String message;
 
-	public Tweet(String message) {
+	private User user;
+
+	public Tweet(User user, String message) {
 		super();
+		this.user = user;
 		this.message = message;
 	}
 
@@ -39,6 +42,6 @@ public abstract class Tweet extends Entity implements TweetAcceptor {
 	}
 
 	public String toString() {
-		return message;
+		return message + " - " + user;
 	}
 }

@@ -33,7 +33,7 @@ public class TweetsController extends Controller<Tweet> {
 			throw new Exception("Enter a message first.");
 		}
 
-		TextTweet tweet = new TextTweet(message);
+		TextTweet tweet = new TextTweet(user, message);
 		user.addTweet(tweet);
 		getRepository().add(tweet);
 		return tweet;
