@@ -5,6 +5,8 @@ import com.tigrang.cs356.a2.model.entity.User;
 import com.tigrang.mvc.controller.Controller;
 import com.tigrang.mvc.model.Repository;
 
+import java.util.List;
+
 /**
  * Users controller
  *
@@ -19,7 +21,7 @@ public class UsersController extends Controller<User> {
 	/**
 	 * Adds a new user to the given group
 	 *
-	 * @param group Group the user belongs to
+	 * @param group    Group the user belongs to
 	 * @param username Name of the user
 	 * @return User
 	 * @throws Exception
@@ -66,5 +68,26 @@ public class UsersController extends Controller<User> {
 	 */
 	public int getTotal() {
 		return getRepository().size();
+	}
+
+	/**
+	 * Returns the last updated user
+	 *
+	 * @return
+	 */
+	public User findLastUpdated() throws Exception {
+		List<User> users = getRepository().findAll();
+		if (users.isEmpty()) {
+			throw new Exception("There are no users.");
+		}
+
+		User user = users.get(0);
+		for (int i = 1; i < users.size(); i++) {
+			if (users.get(i).getUpdated() > user.getUpdated()) {
+				user = users.get(i);
+			}
+		}
+
+		return user;
 	}
 }

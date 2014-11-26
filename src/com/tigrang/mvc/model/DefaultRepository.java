@@ -2,6 +2,8 @@ package com.tigrang.mvc.model;
 
 import com.tigrang.mvc.model.datasource.StorageEngine;
 
+import java.util.List;
+
 public class DefaultRepository<E extends Entity> implements Repository<E> {
 
 	private StorageEngine<E> storageEngine;
@@ -35,5 +37,10 @@ public class DefaultRepository<E extends Entity> implements Repository<E> {
 	@Override
 	public E findById(long id) {
 		return storageEngine.read(id);
+	}
+
+	@Override
+	public List<E> findAll() {
+		return storageEngine.readAll();
 	}
 }

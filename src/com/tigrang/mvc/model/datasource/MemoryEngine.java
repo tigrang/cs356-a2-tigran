@@ -2,7 +2,9 @@ package com.tigrang.mvc.model.datasource;
 
 import com.tigrang.mvc.model.Entity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -25,6 +27,11 @@ public class MemoryEngine<E extends Entity> implements StorageEngine<E> {
 	@Override
 	public E read(long id) {
 		return storage.get(id);
+	}
+
+	@Override
+	public List<E> readAll() {
+		return new ArrayList<>(storage.values());
 	}
 
 	@Override

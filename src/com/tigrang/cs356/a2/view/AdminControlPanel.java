@@ -31,6 +31,7 @@ public class AdminControlPanel extends com.tigrang.mvc.view.View {
 	private JButton btnShowPositivePercentage;
 	private JButton btnOpenUserView;
 	private JTree treeUsers;
+	private JButton btnLastUpdated;
 
 	private AdminControlPanel() {
 
@@ -115,6 +116,14 @@ public class AdminControlPanel extends com.tigrang.mvc.view.View {
 			userOverviewDialog.setTweetsController(tweetsController);
 			userOverviewDialog.init();
 			userOverviewDialog.show(true);
+		});
+
+		btnLastUpdated.addActionListener(ae -> {
+			try {
+				showMessage("Last updated user: " + usersController.findLastUpdated());
+			} catch (Exception e){
+				showError(e.getMessage(), txtUsername);
+			}
 		});
 
 		btnShowUserTotal.addActionListener((ae) -> showMessage(String.format("There are %d users.",
