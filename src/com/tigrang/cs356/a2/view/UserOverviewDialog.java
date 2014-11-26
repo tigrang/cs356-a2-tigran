@@ -9,6 +9,7 @@ import com.tigrang.mvc.view.View;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Date;
 
 public class UserOverviewDialog extends View {
 
@@ -37,6 +38,7 @@ public class UserOverviewDialog extends View {
 	private JButton postTweetButton;
 
 	private JList listNewsFeed;
+	private JLabel txtCreatedDate;
 
 	/**
 	 * Constructor
@@ -78,6 +80,7 @@ public class UserOverviewDialog extends View {
 		frame.pack();
 		frame.setSize(500, 500);
 		setRoot(frame);
+		txtCreatedDate.setText("Created: " + new Date(user.getCreated()));
 		setTitle();
 	}
 
