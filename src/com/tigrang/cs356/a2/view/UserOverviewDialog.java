@@ -8,7 +8,7 @@ import com.tigrang.cs356.a2.model.entity.User;
 import com.tigrang.mvc.view.View;
 
 import javax.swing.*;
-import java.awt.*;
+import java.time.Instant;
 import java.util.Date;
 
 public class UserOverviewDialog extends View {
@@ -38,7 +38,8 @@ public class UserOverviewDialog extends View {
 	private JButton postTweetButton;
 
 	private JList listNewsFeed;
-	private JLabel txtCreatedDate;
+	private JLabel lblCreatedDate;
+	private JLabel lblUpdated;
 
 	/**
 	 * Constructor
@@ -80,7 +81,7 @@ public class UserOverviewDialog extends View {
 		frame.pack();
 		frame.setSize(500, 500);
 		setRoot(frame);
-		txtCreatedDate.setText("Created: " + new Date(user.getCreated()));
+		updateLabels();
 		setTitle();
 	}
 
@@ -118,6 +119,8 @@ public class UserOverviewDialog extends View {
 
 		listFollowing.setModel(followingListModel);
 		listNewsFeed.setModel(newsFeedListModel);
+
+		user.addObserver((o, a) -> updateLabels());
 	}
 
 	/**
@@ -157,5 +160,13 @@ public class UserOverviewDialog extends View {
 	 */
 	public void clearTextTweetMessage() {
 		txtTweet.setText("");
+	}
+
+	/**
+	 * Update last updated time when user changes
+	 */
+	private void updateLabels() {
+		lblCreatedDate.setText("Created: " + Instant.ofEpochSecond(user.getCreated()));
+		lblUpdated.setText("Updated: " + Instant.ofEpochSecond(user.getUpdated()));
 	}
 }
