@@ -6,11 +6,11 @@ import java.util.Observable;
 public abstract class Entity extends Observable implements Comparable<Entity> {
 
 	protected Long id;
-	protected long created;
-	protected long updated;
+	protected long creationTime;
+	protected long lastUpdateTime;
 
 	public Entity() {
-		created = updated = Instant.now().getEpochSecond();
+		creationTime = lastUpdateTime = Instant.now().getEpochSecond();
 	}
 
 	public Long getId() {
@@ -23,29 +23,29 @@ public abstract class Entity extends Observable implements Comparable<Entity> {
 		notifyObservers();
 	}
 
-	public long getCreated() {
-		return created;
+	public long getCreationTime() {
+		return creationTime;
 	}
 
-	public void setCreated(long created) {
-		this.created = created;
+	public void setCreationTime(long creationTime) {
+		this.creationTime = creationTime;
 		setChanged();
 		notifyObservers();
 	}
 
-	public long getUpdated() {
-		return updated;
+	public long getLastUpdatedTime() {
+		return lastUpdateTime;
 	}
 
-	public void setUpdated(long updated) {
-		this.updated = updated;
+	public void setLastUpdateTime(long lastUpdateTime) {
+		this.lastUpdateTime = lastUpdateTime;
 		setChanged(false);
 		notifyObservers();
 	}
 
 	@Override
 	public int compareTo(Entity o) {
-		return Long.compare(created, o.created);
+		return Long.compare(creationTime, o.creationTime);
 	}
 
 	/**
@@ -64,6 +64,6 @@ public abstract class Entity extends Observable implements Comparable<Entity> {
 	@Override
 	protected synchronized void setChanged() {
 		super.setChanged();
-		updated = Instant.now().getEpochSecond();
+		lastUpdateTime = Instant.now().getEpochSecond();
 	}
 }

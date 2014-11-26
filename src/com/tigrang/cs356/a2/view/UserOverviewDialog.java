@@ -166,7 +166,7 @@ public class UserOverviewDialog extends View {
 	 * Update last updated time when user changes
 	 */
 	private void updateLabels() {
-		lblCreatedDate.setText("Created: " + Instant.ofEpochSecond(user.getCreated()));
-		lblUpdated.setText("Updated: " + Instant.ofEpochSecond(user.getUpdated()));
+		lblCreatedDate.setText("Created: " + Instant.ofEpochSecond(user.getCreationTime()));
+		lblUpdated.setText("Updated: " + Instant.ofEpochSecond(user.getLastUpdatedTime()));
 	}
 }

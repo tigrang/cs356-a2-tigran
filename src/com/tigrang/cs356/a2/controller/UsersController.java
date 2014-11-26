@@ -85,7 +85,7 @@ public class UsersController extends Controller<User> {
 
 		User user = users.get(0);
 		for (int i = 1; i < users.size(); i++) {
-			if (users.get(i).getUpdated() > user.getUpdated()) {
+			if (users.get(i).getLastUpdatedTime() > user.getLastUpdatedTime()) {
 				user = users.get(i);
 			}
 		}
