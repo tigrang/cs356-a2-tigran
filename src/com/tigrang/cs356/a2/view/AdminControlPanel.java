@@ -32,6 +32,7 @@ public class AdminControlPanel extends com.tigrang.mvc.view.View {
 	private JButton btnOpenUserView;
 	private JTree treeUsers;
 	private JButton btnLastUpdated;
+	private JButton btnCheckValid;
 
 	private AdminControlPanel() {
 
@@ -116,6 +117,14 @@ public class AdminControlPanel extends com.tigrang.mvc.view.View {
 			userOverviewDialog.setTweetsController(tweetsController);
 			userOverviewDialog.init();
 			userOverviewDialog.show(true);
+		});
+
+		btnCheckValid.addActionListener(ae -> {
+			if (usersController.allUsernamesValid() && groupsController.allNamesValid()) {
+				showMessage("Users/Groups are valid.");
+			} else {
+				showError("Users/Groups NOT valid.");
+			}
 		});
 
 		btnLastUpdated.addActionListener(ae -> {

@@ -5,7 +5,9 @@ import com.tigrang.cs356.a2.model.entity.User;
 import com.tigrang.mvc.controller.Controller;
 import com.tigrang.mvc.model.Repository;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Users controller
@@ -89,5 +91,21 @@ public class UsersController extends Controller<User> {
 		}
 
 		return user;
+	}
+
+	/**
+	 * Validates that all usernames are unique and do not contain spaces
+	 *
+	 * @return
+	 */
+	public boolean allUsernamesValid() {
+		Set<String> usernames = new HashSet<>();
+		for (User user : getRepository().findAll()) {
+			if (usernames.contains(user.getUsername()) || user.getUsername().contains(" ")) {
+				return false;
+			}
+			usernames.add(user.getUsername());
+		}
+		return true;
 	}
 }

@@ -1,8 +1,12 @@
 package com.tigrang.cs356.a2.controller;
 
 import com.tigrang.cs356.a2.model.entity.Group;
+import com.tigrang.cs356.a2.model.entity.User;
 import com.tigrang.mvc.controller.Controller;
 import com.tigrang.mvc.model.Repository;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Groups controller
@@ -55,5 +59,21 @@ public class GroupsController extends Controller<Group> {
 	 */
 	public int getTotal() {
 		return getRepository().size();
+	}
+
+	/**
+	 * Validates that all group names are unique and do not contain spaces
+	 *
+	 * @return
+	 */
+	public boolean allNamesValid() {
+		Set<String> names = new HashSet<>();
+		for (Group group : getRepository().findAll()) {
+			if (names.contains(group.getName()) || group.getName().contains(" ")) {
+				return false;
+			}
+			names.add(group.getName());
+		}
+		return true;
 	}
 }

@@ -46,10 +46,21 @@ public abstract class View {
 	 * Shows the given error message and focuses the component it is meant for
 	 *
 	 * @param message
+	 */
+	public void showError(String message) {
+		showError(message, null);
+	}
+
+	/**
+	 * Shows the given error message and focuses the component it is meant for
+	 *
+	 * @param message
 	 * @param component
 	 */
 	public void showError(String message, Component component) {
 		JOptionPane.showMessageDialog(getRoot(), message, "Error", JOptionPane.ERROR_MESSAGE);
-		component.requestFocus();
+		if (component != null) {
+			component.requestFocus();
+		}
 	}
 }
